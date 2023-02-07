@@ -12,8 +12,8 @@
             "label": "timerz build",
             "dependsOn": [
                 "tsc-watch",
-                // "sass-watch",
-                // "csso-watch",
+                "sass-watch",
+                "csso-watch",
             ],
             "group": {
                 "kind": "build",
@@ -33,25 +33,25 @@
                 "group": "devtools"
             }
         },
-        // {
-        //     "label": "sass-watch",
-        //     "type": "shell",
-        //     "command": "bash sass-watch.sh",
-        //     "isBackground": true,
-        //     "problemMatcher": [],
-        //     "presentation": {
-        //         "group": "devtools"
-        //     }
-        // },
-        // {
-        //     "label": "csso-watch",
-        //     "type": "shell",
-        //     "command": "bash csso-watch.sh",
-        //     "isBackground": true,
-        //     "problemMatcher": [],
-        //     "presentation": {
-        //         "group": "devtools"
-        //     }
-        // },
+        {
+            "label": "sass-watch",
+            "type": "shell",
+            "command": "bash sass-watch.sh",
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "devtools"
+            }
+        },
+        {
+            "label": "csso-watch",
+            "type": "shell",
+            "command": "bash csso-watch.sh",
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "devtools"
+            }
+        },
     ]
 }
