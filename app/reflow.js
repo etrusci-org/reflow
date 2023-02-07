@@ -18,19 +18,19 @@ export class Reflow {
             writable: true,
             value: 0
         });
-        Object.defineProperty(this, "roundStartedOn", {
+        Object.defineProperty(this, "cycleStartedOn", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: 0
         });
-        Object.defineProperty(this, "round", {
+        Object.defineProperty(this, "cycle", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: 0
         });
-        Object.defineProperty(this, "roundElapsed", {
+        Object.defineProperty(this, "cycleElapsed", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -67,8 +67,8 @@ export class Reflow {
             value: $(`
         <tr>
             <td class="label"></td>
-            <td class="round"></td>
-            <td class="roundElapsed"></td>
+            <td class="cycle"></td>
+            <td class="cycleElapsed"></td>
             <td class="totalElapsed"></td>
             <td class="averageElapsed"></td>
             <td class="ctrl">
@@ -88,7 +88,7 @@ export class Reflow {
         }
         this.worker = new Worker('./reflow-worker.js');
         this.worker.onmessage = (event) => {
-            this.updateElement(event.data.roundElapsed, event.data.totalElapsed, event.data.averageElapsed);
+            this.updateElement(event.data.cycleElapsed, event.data.totalElapsed, event.data.averageElapsed);
         };
         this.bakeElement();
     }
@@ -99,14 +99,14 @@ export class Reflow {
         $(this.element).find('.ctrl .start').remove();
         $(this.element).find('.ctrl .reset').removeClass('hidden');
         this.startedOn = Date.now();
-        this.roundStartedOn = Date.now();
-        this.round = 1;
-        $(this.element).find('.round').text(this.round);
+        this.cycleStartedOn = Date.now();
+        this.cycle = 1;
+        $(this.element).find('.cycle').text(this.cycle);
         this.worker.postMessage({
             action: 'start',
             startedOn: this.startedOn,
-            roundStartedOn: this.roundStartedOn,
-            round: this.round,
+            cycleStartedOn: this.cycleStartedOn,
+            cycle: this.cycle,
         });
     }
     stop() {
@@ -121,14 +121,14 @@ export class Reflow {
     }
     reset() {
         this.avoidDoubleClick('.ctrl .reset');
-        this.roundStartedOn = Date.now();
-        this.round += 1;
-        $(this.element).find('.round').text(this.round);
+        this.cycleStartedOn = Date.now();
+        this.cycle += 1;
+        $(this.element).find('.cycle').text(this.cycle);
         this.worker.postMessage({
             action: 'reset',
             startedOn: this.startedOn,
-            roundStartedOn: this.roundStartedOn,
-            round: this.round,
+            cycleStartedOn: this.cycleStartedOn,
+            cycle: this.cycle,
         });
     }
     delete() {
@@ -139,8 +139,8 @@ export class Reflow {
         });
         this.worker.terminate();
     }
-    updateElement(roundElapsed, totalElapsed, averageElapsed) {
-        $(this.element).find('.roundElapsed').html(this.secToDur(roundElapsed / 1000));
+    updateElement(cycleElapsed, totalElapsed, averageElapsed) {
+        $(this.element).find('.cycleElapsed').html(this.secToDur(cycleElapsed / 1000));
         $(this.element).find('.totalElapsed').html(this.secToDur(totalElapsed / 1000));
         $(this.element).find('.averageElapsed').html(this.secToDur(averageElapsed / 1000));
     }

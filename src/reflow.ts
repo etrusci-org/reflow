@@ -2,9 +2,9 @@ export class Reflow {
     id: string = this.getNewId()
     label: string = ''
     startedOn: number = 0
-    roundStartedOn: number = 0
-    round: number = 0
-    roundElapsed: number = 0
+    cycleStartedOn: number = 0
+    cycle: number = 0
+    cycleElapsed: number = 0
     totalElapsed: number = 0
     averageElapsed: number = 0
 
@@ -14,8 +14,8 @@ export class Reflow {
     element: JQuery<HTMLTableRowElement> = $(`
         <tr>
             <td class="label"></td>
-            <td class="round"></td>
-            <td class="roundElapsed"></td>
+            <td class="cycle"></td>
+            <td class="cycleElapsed"></td>
             <td class="totalElapsed"></td>
             <td class="averageElapsed"></td>
             <td class="ctrl">
@@ -41,7 +41,7 @@ export class Reflow {
 
         this.worker.onmessage = (event) => {
             this.updateElement(
-                event.data.roundElapsed,
+                event.data.cycleElapsed,
                 event.data.totalElapsed,
                 event.data.averageElapsed
             )
@@ -62,16 +62,16 @@ export class Reflow {
         $(this.element).find('.ctrl .reset').removeClass('hidden')
 
         this.startedOn = Date.now()
-        this.roundStartedOn = Date.now()
-        this.round = 1
+        this.cycleStartedOn = Date.now()
+        this.cycle = 1
 
-        $(this.element).find('.round').text(this.round)
+        $(this.element).find('.cycle').text(this.cycle)
 
         this.worker.postMessage({
             action: 'start',
             startedOn: this.startedOn,
-            roundStartedOn: this.roundStartedOn,
-            round: this.round,
+            cycleStartedOn: this.cycleStartedOn,
+            cycle: this.cycle,
         })
     }
 
@@ -94,16 +94,16 @@ export class Reflow {
     reset(): void {
         this.avoidDoubleClick('.ctrl .reset')
 
-        this.roundStartedOn = Date.now()
-        this.round += 1
+        this.cycleStartedOn = Date.now()
+        this.cycle += 1
 
-        $(this.element).find('.round').text(this.round)
+        $(this.element).find('.cycle').text(this.cycle)
 
         this.worker.postMessage({
             action: 'reset',
             startedOn: this.startedOn,
-            roundStartedOn: this.roundStartedOn,
-            round: this.round,
+            cycleStartedOn: this.cycleStartedOn,
+            cycle: this.cycle,
         })
     }
 
@@ -123,8 +123,8 @@ export class Reflow {
 
     // --------------------------------------------------------------------------------------------
 
-    updateElement(roundElapsed: number, totalElapsed: number, averageElapsed: number): void {
-        $(this.element).find('.roundElapsed').html(this.secToDur(roundElapsed / 1000))
+    updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number): void {
+        $(this.element).find('.cycleElapsed').html(this.secToDur(cycleElapsed / 1000))
         $(this.element).find('.totalElapsed').html(this.secToDur(totalElapsed / 1000))
         $(this.element).find('.averageElapsed').html(this.secToDur(averageElapsed / 1000))
     }

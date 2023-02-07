@@ -12,9 +12,9 @@ onmessage = (event) => {
         intervalID = setInterval(() => {
             postMessage({
                 // id: event.data.id,
-                roundElapsed: Date.now() - event.data.roundStartedOn,
+                cycleElapsed: Date.now() - event.data.cycleStartedOn,
                 totalElapsed: Date.now() - event.data.startedOn,
-                averageElapsed: (Date.now() - event.data.startedOn) / event.data.round,
+                averageElapsed: (Date.now() - event.data.startedOn) / event.data.cycle,
             })
         }, updateInterval)
     }
@@ -29,9 +29,9 @@ onmessage = (event) => {
         intervalID = setInterval(() => {
             postMessage({
                 // id: event.data.id,
-                roundElapsed: Date.now() - event.data.roundStartedOn,
+                cycleElapsed: Date.now() - event.data.cycleStartedOn,
                 totalElapsed: Date.now() - event.data.startedOn,
-                averageElapsed: (Date.now() - event.data.startedOn) / event.data.round,
+                averageElapsed: (Date.now() - event.data.startedOn) / event.data.cycle,
             })
         }, updateInterval)
     }
