@@ -54,16 +54,19 @@ export class Reflow {
             writable: true,
             value: void 0
         });
+        Object.defineProperty(this, "elementContainerSelector", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: '.timers tbody'
+        });
         Object.defineProperty(this, "element", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: $(`
         <tr>
-            <!-- <td class="id"></td> -->
             <td class="label"></td>
-            <!-- <td class="startedOn"></td> -->
-            <!-- <td class="roundStartedOn"></td> -->
             <td class="round"></td>
             <td class="roundElapsed"></td>
             <td class="totalElapsed"></td>
@@ -71,8 +74,8 @@ export class Reflow {
             <td class="ctrl">
                 <button class="start">start</button>
                 <button class="reset hidden">reset</button>
-                <button class="stop hidden">stop</button>
-                <button class="delete">delete</button>
+                <button class="stop">stop</button>
+                <button class="delete hidden">delete</button>
             </td>
         </tr>
     `)
@@ -90,13 +93,11 @@ export class Reflow {
         this.bakeElement();
     }
     add() {
-        $(this.element).appendTo('.timers');
+        $(this.element).appendTo(this.elementContainerSelector);
     }
     start() {
-        this.avoidDoubleClick('.ctrl button');
         $(this.element).find('.ctrl .start').remove();
         $(this.element).find('.ctrl .reset').removeClass('hidden');
-        $(this.element).find('.ctrl .stop').removeClass('hidden');
         this.startedOn = Date.now();
         this.roundStartedOn = Date.now();
         this.round = 1;
@@ -109,10 +110,10 @@ export class Reflow {
         });
     }
     stop() {
-        this.avoidDoubleClick('.ctrl button');
-        $(this.element).find('.ctrl .start').remove();
+        this.avoidDoubleClick('.ctrl .stop');
         $(this.element).find('.ctrl .reset').remove();
         $(this.element).find('.ctrl .stop').remove();
+        $(this.element).find('.ctrl .delete').removeClass('hidden');
         this.worker.postMessage({
             action: 'stop',
         });
@@ -131,7 +132,7 @@ export class Reflow {
         });
     }
     delete() {
-        this.avoidDoubleClick('.ctrl button', true);
+        this.avoidDoubleClick('.ctrl .delete', true);
         $(this.element).remove();
         this.worker.postMessage({
             action: 'delete',
@@ -178,7 +179,7 @@ export class Reflow {
         let d = Math.floor(seconds / (3600 * 24));
         let h = Math.floor(seconds % (3600 * 24) / 3600);
         let m = Math.floor(seconds % 3600 / 60);
-        let s = Math.floor(seconds % 60);
+        let s = seconds % 60;
         let elapsed = '';
         if (seconds >= 86400)
             elapsed += `${d}<span class="unit">d</span> `;
@@ -186,7 +187,7 @@ export class Reflow {
             elapsed += `${h}<span class="unit">h</span> `;
         if (seconds >= 60)
             elapsed += `${m}<span class="unit">m</span> `;
-        elapsed += `${s}<span class="unit">s</span>`;
+        elapsed += `${s.toFixed(2).padStart(5, '0')}<span class="unit">s</span>`;
         return elapsed;
     }
 }

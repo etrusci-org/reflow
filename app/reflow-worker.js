@@ -1,6 +1,6 @@
 "use strict";
 let intervalID = null;
-const updateInterval = 77;
+const updateInterval = 111;
 onmessage = (event) => {
     if (event.data.action == 'start') {
         if (intervalID)

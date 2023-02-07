@@ -10,12 +10,10 @@ export class Reflow {
 
     worker: Worker
 
+    elementContainerSelector: string = '.timers tbody'
     element: JQuery<HTMLTableRowElement> = $(`
         <tr>
-            <!-- <td class="id"></td> -->
             <td class="label"></td>
-            <!-- <td class="startedOn"></td> -->
-            <!-- <td class="roundStartedOn"></td> -->
             <td class="round"></td>
             <td class="roundElapsed"></td>
             <td class="totalElapsed"></td>
@@ -23,8 +21,8 @@ export class Reflow {
             <td class="ctrl">
                 <button class="start">start</button>
                 <button class="reset hidden">reset</button>
-                <button class="stop hidden">stop</button>
-                <button class="delete">delete</button>
+                <button class="stop">stop</button>
+                <button class="delete hidden">delete</button>
             </td>
         </tr>
     `)
@@ -55,16 +53,13 @@ export class Reflow {
     // --------------------------------------------------------------------------------------------
 
     add(): void {
-        $(this.element).appendTo('.timers')
+        $(this.element).appendTo(this.elementContainerSelector)
     }
 
 
     start(): void {
-        this.avoidDoubleClick('.ctrl button')
-
         $(this.element).find('.ctrl .start').remove()
         $(this.element).find('.ctrl .reset').removeClass('hidden')
-        $(this.element).find('.ctrl .stop').removeClass('hidden')
 
         this.startedOn = Date.now()
         this.roundStartedOn = Date.now()
@@ -82,11 +77,11 @@ export class Reflow {
 
 
     stop(): void {
-        this.avoidDoubleClick('.ctrl button')
+        this.avoidDoubleClick('.ctrl .stop')
 
-        $(this.element).find('.ctrl .start').remove()
         $(this.element).find('.ctrl .reset').remove()
         $(this.element).find('.ctrl .stop').remove()
+        $(this.element).find('.ctrl .delete').removeClass('hidden')
 
         this.worker.postMessage({
             action: 'stop',
@@ -114,7 +109,7 @@ export class Reflow {
 
 
     delete(): void {
-        this.avoidDoubleClick('.ctrl button', true)
+        this.avoidDoubleClick('.ctrl .delete', true)
 
         $(this.element).remove()
 
@@ -186,16 +181,14 @@ export class Reflow {
         let d = Math.floor(seconds / (3600 * 24))
         let h = Math.floor(seconds % (3600 * 24) / 3600)
         let m = Math.floor(seconds % 3600 / 60)
-        let s = Math.floor(seconds % 60)
-        // let s = seconds % 60
+        // let s = Math.floor(seconds % 60)
+        let s = seconds % 60
 
         let elapsed = ''
         if (seconds >= 86400) elapsed += `${d}<span class="unit">d</span> `
         if (seconds >= 3600)  elapsed += `${h}<span class="unit">h</span> `
         if (seconds >= 60)    elapsed += `${m}<span class="unit">m</span> `
-        // elapsed += `${(s < 10) ? '0' : ''}${s.toFixed(2)}<span class="unit">s</span>`
-        // elapsed += `${s.toFixed(2).padStart(5, '0')}<span class="unit">s</span>`
-        elapsed += `${s}<span class="unit">s</span>`
+        elapsed += `${s.toFixed(2).padStart(5, '0')}<span class="unit">s</span>`
 
         return elapsed
     }

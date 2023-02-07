@@ -4,7 +4,6 @@ $(function () {
     $('.add-new').on('click', () => {
         let label = $('.add-new-label').val();
         let timer = new Reflow(`${label}`);
-        console.debug(timer);
         timer.add();
         $('.add-new-label').val('');
     });
