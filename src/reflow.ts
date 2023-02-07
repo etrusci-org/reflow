@@ -21,7 +21,7 @@ export class Reflow {
             <td class="ctrl">
                 <button class="start">start</button>
                 <button class="reset hidden">reset</button>
-                <button class="stop">stop</button>
+                <button class="stop hidden">stop</button>
                 <button class="delete hidden">delete</button>
             </td>
         </tr>
@@ -59,6 +59,7 @@ export class Reflow {
 
     start(): void {
         $(this.element).find('.ctrl .start').remove()
+        $(this.element).find('.ctrl .stop').removeClass('hidden')
         $(this.element).find('.ctrl .reset').removeClass('hidden')
 
         this.startedOn = Date.now()
@@ -77,10 +78,8 @@ export class Reflow {
 
 
     stop(): void {
-        this.avoidDoubleClick('.ctrl .stop')
-
-        $(this.element).find('.ctrl .reset').remove()
         $(this.element).find('.ctrl .stop').remove()
+        $(this.element).find('.ctrl .reset').remove()
         $(this.element).find('.ctrl .delete').removeClass('hidden')
 
         this.worker.postMessage({
