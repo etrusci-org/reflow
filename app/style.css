@@ -1,9 +1,54 @@
+html,
+body,
+div,
+span,
+input,
+button,
+table,
+tr,
+th,
+td,
+tbody {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
 body {
-  font-family: monospace;
+  min-height: 100vh;
+  line-height: 1;
+  text-rendering: geometricPrecision;
+}
+
+input,
+button {
+  outline: none;
 }
 
 .hidden {
   display: none;
+}
+
+body {
+  padding: 1rem;
+}
+
+body,
+input,
+button {
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+input,
+button {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+button {
+  font-weight: bold;
+  cursor: pointer;
 }
 
 table {
@@ -11,9 +56,49 @@ table {
   text-align: left;
   border-collapse: collapse;
 }
-
-td,
-th {
-  border: 1px dotted;
+table td {
   padding: 0.25rem;
+  border: 1px dotted;
+}
+
+.add-new-form {
+  margin-bottom: 1rem;
+}
+
+.timers .label,
+.timers .cycle,
+.timers .cycleElapsed {
+  font-weight: bold;
+}
+.timers .label,
+.timers .cycle,
+.timers .cycleElapsed,
+.timers .totalElapsed,
+.timers .averageElapsed {
+  cursor: help;
+}
+
+body {
+  color: #ccc;
+  background-color: #111;
+}
+
+input,
+button {
+  color: #ccc;
+  background-color: #333;
+}
+input:hover,
+button:hover {
+  color: #e2e2e2;
+  background-color: #444;
+}
+
+button:active {
+  color: #ffffff;
+  background-color: #666;
+}
+
+table td {
+  border-color: #666;
 }

@@ -66,16 +66,16 @@ export class Reflow {
             writable: true,
             value: $(`
         <tr>
-            <td class="label"></td>
-            <td class="cycle"></td>
-            <td class="cycleElapsed"></td>
-            <td class="totalElapsed"></td>
-            <td class="averageElapsed"></td>
+            <td class="label" title="Label">-</td>
+            <td class="cycle" title="Current cycle">-</td>
+            <td class="cycleElapsed" title="Elapsed time in current cycle">-</td>
+            <td class="totalElapsed" title="Total time elapsed since start">-</td>
+            <td class="averageElapsed" title="Average time elapsed per cycle">-</td>
             <td class="ctrl">
-                <button class="start">start</button>
-                <button class="reset hidden">reset</button>
-                <button class="stop hidden">stop</button>
-                <button class="delete hidden">delete</button>
+                <button class="start" title="Start timer">start</button>
+                <button class="reset hidden" title="Start new cycle">reset</button>
+                <button class="stop hidden" title="Stop timer">stop</button>
+                <button class="delete hidden" title="Delete timer">delete</button>
             </td>
         </tr>
     `)

@@ -1,0 +1,58 @@
+body {
+    padding: 1rem;
+}
+
+
+body,
+input,
+button {
+    font-family: monospace;
+    font-size: 1rem;
+}
+
+
+input,
+button {
+    padding: .25rem .5rem;
+    border-radius: .25rem;
+}
+
+
+button {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+
+    td {
+        padding: .25rem;
+        border: 1px dotted;
+    }
+}
+
+
+.add-new-form {
+    margin-bottom: 1rem;
+}
+
+
+.timers {
+    .label,
+    .cycle,
+    .cycleElapsed {
+        font-weight: bold;
+    }
+
+    .label,
+    .cycle,
+    .cycleElapsed,
+    .totalElapsed,
+    .averageElapsed {
+        cursor: help;
+    }
+}

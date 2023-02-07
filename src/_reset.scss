@@ -1,0 +1,28 @@
+html,
+body,
+div,
+span,
+input,
+button,
+table,
+tr,
+th,
+td,
+tbody {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+
+body {
+    min-height: 100vh;
+    line-height: 1;
+    text-rendering: geometricPrecision;
+}
+
+
+input,
+button {
+    outline: none;
+}

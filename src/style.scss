@@ -1,22 +1,4 @@
-body {
-    font-family: monospace;
-}
-
-
-.hidden {
-    display: none;
-}
-
-
-table {
-    width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-}
-
-
-td,
-th {
-    border: 1px dotted;
-    padding: .25rem;
-}
+@import '_reset';
+@import '_reflow';
+@import '_layout';
+@import '_color';
