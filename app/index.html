@@ -12,10 +12,21 @@
 <body>
     <div class="add-new-form">
         <button class="add-new">add timer</button>
-        <input class="add-new-label" placeholder="optional label">
+        <input class="add-new-label" type="text" placeholder="optional label...">
+        <input class="add-new-alertAfter" type="text" placeholder="mark after...">
     </div>
 
-    <table class="timers">
+    <table class="timers hidden">
+        <thead>
+            <tr>
+                <th>label</th>
+                <th>cycle</th>
+                <th>current</th>
+                <th>total</th>
+                <th>average</th>
+                <th>controls</th>
+            </tr>
+        </thead>
         <tbody></tbody>
     </table>
 

@@ -24,13 +24,28 @@ button {
 
     &[disabled] {
         color: #666;
-        text-decoration: line-through;
     }
 }
 
 
 table {
+    th {
+        color: #666;
+    }
+
     td {
         border-color: #666;
     }
+
+    tr:hover,
+    tr:focus {
+        td {
+            background-color: #1f1f1f;
+        }
+    }
+}
+
+
+.alert {
+    color: #ff9900;
 }

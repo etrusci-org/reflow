@@ -8,6 +8,8 @@ export class Reflow {
     totalElapsed: number = 0
     averageElapsed: number = 0
 
+    alertAfter: number = 0
+
     worker: Worker
 
     elementContainerSelector: string = '.timers tbody'
@@ -22,19 +24,24 @@ export class Reflow {
                 <button class="start" title="Start timer">start</button>
                 <button class="reset hidden" title="Start new cycle">reset</button>
                 <button class="stop hidden" title="Stop timer">stop</button>
-                <button class="delete hidden" title="Delete timer">delete</button>
+                <button class="delete" title="Delete timer">delete</button>
             </td>
         </tr>
     `)
 
     // --------------------------------------------------------------------------------------------
 
-    constructor(label?: string) {
+    constructor(label?: string, alertAfter?: string) {
         if (label) {
             this.label = label.trim()
         }
         else {
             this.label = this.id
+        }
+
+        if (alertAfter) {
+        //     this.alertAfter = Math.max(parseInt(alertAfter), 0) * 1000
+            this.alertAfter = this.durToSec(alertAfter)
         }
 
         this.worker = new Worker('./reflow-worker.js')
@@ -81,7 +88,7 @@ export class Reflow {
     stop(): void {
         $(this.element).find('.ctrl .stop').remove()
         $(this.element).find('.ctrl .reset').remove()
-        $(this.element).find('.ctrl .delete').removeClass('hidden')
+        // $(this.element).find('.ctrl .delete').removeClass('hidden')
 
         this.worker.postMessage({
             action: 'stop',
@@ -98,6 +105,9 @@ export class Reflow {
         this.cycle += 1
 
         $(this.element).find('.cycle').text(this.cycle)
+
+        $(this.element).find('.cycleElapsed').removeClass('alert')
+        $(this.element).find('.averageElapsed').removeClass('alert')
 
         this.worker.postMessage({
             action: 'reset',
@@ -118,15 +128,26 @@ export class Reflow {
         })
 
         this.worker.terminate()
-
     }
 
     // --------------------------------------------------------------------------------------------
 
     updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number): void {
         $(this.element).find('.cycleElapsed').html(this.secToDur(cycleElapsed / 1000))
-        $(this.element).find('.totalElapsed').html(this.secToDur(totalElapsed / 1000))
-        $(this.element).find('.averageElapsed').html(this.secToDur(averageElapsed / 1000))
+        if (this.cycle > 1) {
+            $(this.element).find('.totalElapsed').html(this.secToDur(totalElapsed / 1000))
+            $(this.element).find('.averageElapsed').html(this.secToDur(averageElapsed / 1000))
+        }
+
+        if (this.alertAfter == 0) return
+
+        if (cycleElapsed > this.alertAfter) {
+            $(this.element).find('.cycleElapsed').addClass('alert')
+        }
+
+        if (averageElapsed > this.alertAfter) {
+            $(this.element).find('.averageElapsed').addClass('alert')
+        }
     }
 
 
@@ -174,22 +195,52 @@ export class Reflow {
 
 
     secToDur(seconds: number): string {
-        // seconds = seconds + (86400 * 3) + (3600 * 23) + (60 * 59) + 55
-        // seconds = seconds + 3595
-        // seconds = seconds + 55
+        const d: number = Math.floor(seconds / (3600 * 24))
+        const h: number = Math.floor(seconds % (3600 * 24) / 3600)
+        const m: number = Math.floor(seconds % 3600 / 60)
+        const s: number = Math.floor(seconds % 60)
 
-        let d = Math.floor(seconds / (3600 * 24))
-        let h = Math.floor(seconds % (3600 * 24) / 3600)
-        let m = Math.floor(seconds % 3600 / 60)
-        // let s = Math.floor(seconds % 60)
-        let s = seconds % 60
-
-        let elapsed = ''
-        if (seconds >= 86400) elapsed += `${d}<span class="unit">d</span> `
-        if (seconds >= 3600)  elapsed += `${h}<span class="unit">h</span> `
-        if (seconds >= 60)    elapsed += `${m}<span class="unit">m</span> `
-        elapsed += `${s.toFixed(2).padStart(5, '0')}<span class="unit">s</span>`
+        let elapsed: string = ''
+        if (seconds >= 86400) elapsed += `${d}:`
+        elapsed += `${h.toString().padStart(2, '0')}:`
+        elapsed += `${m.toString().padStart(2, '0')}:`
+        elapsed += `${s.toString().padStart(2, '0')}`
 
         return elapsed
+    }
+
+    durToSec(duration: string): number {
+        const dur: string[] = duration.split(':')
+
+        let s: number = 0
+
+        switch (dur.length) {
+            case 1:
+                s += parseInt(`${dur[0]}`)
+            break
+
+            case 2:
+                s += parseInt(`${dur[0]}`) * 60
+                s += parseInt(`${dur[1]}`)
+            break
+
+            case 3:
+                s += parseInt(`${dur[0]}`) * 3600
+                s += parseInt(`${dur[1]}`) * 60
+                s += parseInt(`${dur[2]}`)
+            break
+
+            case 4:
+                s += parseInt(`${dur[0]}`) * 86400
+                s += parseInt(`${dur[1]}`) * 3600
+                s += parseInt(`${dur[2]}`) * 60
+                s += parseInt(`${dur[3]}`)
+            break
+
+            default:
+                s = 0
+        }
+
+        return Math.max(s * 1000, 0)
     }
 }
