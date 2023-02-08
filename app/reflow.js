@@ -99,8 +99,9 @@ export class Reflow {
         $(this.element).find('.ctrl .start').remove();
         $(this.element).find('.ctrl .stop').removeClass('hidden');
         $(this.element).find('.ctrl .reset').removeClass('hidden');
-        this.startedOn = Date.now();
-        this.cycleStartedOn = Date.now();
+        let now = Date.now();
+        this.startedOn = now;
+        this.cycleStartedOn = now;
         this.cycle = 1;
         $(this.element).find('.cycle').text(this.cycle);
         this.worker.postMessage({

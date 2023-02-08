@@ -98,6 +98,10 @@ button:active {
   color: #ffffff;
   background-color: #666;
 }
+button[disabled] {
+  color: #666;
+  text-decoration: line-through;
+}
 
 table td {
   border-color: #666;

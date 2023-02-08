@@ -21,6 +21,11 @@ button {
         color: #ffffff;
         background-color: #666;
     }
+
+    &[disabled] {
+        color: #666;
+        text-decoration: line-through;
+    }
 }
 
 

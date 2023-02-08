@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-input="./app/style.css"
+input="./src/style-compiled.css"
 output="./app/style.min.css"
 
 csso \
