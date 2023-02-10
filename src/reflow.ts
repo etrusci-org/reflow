@@ -167,6 +167,10 @@ export class Reflow {
         $(this.element).find('.ctrl .delete').on('click', () => { this.delete() })
 
         $(this.element).find('.label').text(this.label)
+
+        if (this.alertAfter > 0) {
+            $(this.element).find('.label').append(`<br>(${this.MillisecToDur(this.alertAfter)})`)
+        }
     }
 
 
