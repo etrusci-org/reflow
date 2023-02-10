@@ -203,36 +203,36 @@ export class Reflow {
         let elapsed = '';
         if (seconds >= 86400)
             elapsed += `${d}:`;
-        elapsed += `${h.toString().padStart(2, '0')}:`;
+        elapsed += `${h}:`;
         elapsed += `${m.toString().padStart(2, '0')}:`;
         elapsed += `${s.toString().padStart(2, '0')}`;
         return elapsed;
     }
     durToMillisec(duration) {
-        const dur = duration.split(':');
+        const dur = duration.split(' ');
         let s = 0;
-        switch (dur.length) {
-            case 1:
-                s += parseInt(`${dur[0]}`);
-                break;
-            case 2:
-                s += parseInt(`${dur[0]}`) * 60;
-                s += parseInt(`${dur[1]}`);
-                break;
-            case 3:
-                s += parseInt(`${dur[0]}`) * 3600;
-                s += parseInt(`${dur[1]}`) * 60;
-                s += parseInt(`${dur[2]}`);
-                break;
-            case 4:
-                s += parseInt(`${dur[0]}`) * 86400;
-                s += parseInt(`${dur[1]}`) * 3600;
-                s += parseInt(`${dur[2]}`) * 60;
-                s += parseInt(`${dur[3]}`);
-                break;
-            default:
-                s = 0;
-        }
-        return Math.max(s * 1000, 0);
+        dur.forEach(v => {
+            const re = new RegExp(/(\d+)([dhms]{1})/, 'gi');
+            const rem = re.exec(v);
+            if (!rem ||
+                !rem[1] ||
+                !rem[2])
+                return 0;
+            switch (rem[2]) {
+                case 'd':
+                    s += parseInt(rem[1]) * 86400;
+                    break;
+                case 'h':
+                    s += parseInt(rem[1]) * 3600;
+                    break;
+                case 'm':
+                    s += parseInt(rem[1]) * 60;
+                    break;
+                case 's':
+                    s += parseInt(rem[1]);
+                    break;
+            }
+        });
+        return s * 1000;
     }
 }

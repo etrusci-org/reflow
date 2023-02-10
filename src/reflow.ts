@@ -198,7 +198,7 @@ export class Reflow {
 
         let elapsed: string = ''
         if (seconds >= 86400) elapsed += `${d}:`
-        elapsed += `${h.toString().padStart(2, '0')}:`
+        elapsed += `${h}:`
         elapsed += `${m.toString().padStart(2, '0')}:`
         elapsed += `${s.toString().padStart(2, '0')}`
 
@@ -207,37 +207,38 @@ export class Reflow {
 
 
     durToMillisec(duration: string): number {
-        const dur: string[] = duration.split(':')
-
+        const dur: string[] = duration.split(' ')
         let s: number = 0
 
-        switch (dur.length) {
-            case 1:
-                s += parseInt(`${dur[0]}`)
-            break
+        dur.forEach(v => {
+            const re: RegExp = new RegExp(/(\d+)([dhms]{1})/, 'gi')
+            const rem: RegExpExecArray | null = re.exec(v)
 
-            case 2:
-                s += parseInt(`${dur[0]}`) * 60
-                s += parseInt(`${dur[1]}`)
-            break
+            if (
+                !rem ||
+                !rem[1] ||
+                !rem[2]
+            ) return 0
 
-            case 3:
-                s += parseInt(`${dur[0]}`) * 3600
-                s += parseInt(`${dur[1]}`) * 60
-                s += parseInt(`${dur[2]}`)
-            break
+            switch (rem[2]) {
+                case 'd':
+                    s += parseInt(rem[1]) * 86400
+                break
 
-            case 4:
-                s += parseInt(`${dur[0]}`) * 86400
-                s += parseInt(`${dur[1]}`) * 3600
-                s += parseInt(`${dur[2]}`) * 60
-                s += parseInt(`${dur[3]}`)
-            break
+                case 'h':
+                    s += parseInt(rem[1]) * 3600
+                break
 
-            default:
-                s = 0
-        }
+                case 'm':
+                    s += parseInt(rem[1]) * 60
+                break
 
-        return Math.max(s * 1000, 0)
+                case 's':
+                    s += parseInt(rem[1])
+                break
+            }
+        })
+
+        return s * 1000
     }
 }
