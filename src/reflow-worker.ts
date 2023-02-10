@@ -31,6 +31,14 @@ onmessage = (event): void => {
                     cycleElapsed: now - event.data.cycleStartedOn,
                     totalElapsed: now - event.data.startedOn,
                     averageElapsed: (now - event.data.startedOn) / event.data.cycle,
+                    overdueCycle: (
+                        event.data.alertAfter > 0 &&
+                        now - event.data.cycleStartedOn > event.data.alertAfter
+                    ) ? true : false,
+                    overdueAverage: (
+                        event.data.alertAfter > 0 &&
+                        (now - event.data.startedOn) / event.data.cycle > event.data.alertAfter
+                    ) ? true : false,
                 })
             }, updateInterval)
             break;

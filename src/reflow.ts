@@ -40,8 +40,7 @@ export class Reflow {
         }
 
         if (alertAfter) {
-        //     this.alertAfter = Math.max(parseInt(alertAfter), 0) * 1000
-            this.alertAfter = this.durToSec(alertAfter)
+            this.alertAfter = this.durToMillisec(alertAfter)
         }
 
         this.worker = new Worker('./reflow-worker.js')
@@ -51,6 +50,8 @@ export class Reflow {
                 event.data.cycleElapsed,
                 event.data.totalElapsed,
                 event.data.averageElapsed,
+                event.data.overdueCycle,
+                event.data.overdueAverage,
             )
         }
 
@@ -81,6 +82,7 @@ export class Reflow {
             startedOn: this.startedOn,
             cycleStartedOn: this.cycleStartedOn,
             cycle: this.cycle,
+            alertAfter: this.alertAfter,
         })
     }
 
@@ -114,6 +116,7 @@ export class Reflow {
             startedOn: this.startedOn,
             cycleStartedOn: this.cycleStartedOn,
             cycle: this.cycle,
+            alertAfter: this.alertAfter,
         })
     }
 
@@ -132,22 +135,14 @@ export class Reflow {
 
     // --------------------------------------------------------------------------------------------
 
-    updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number): void {
-        $(this.element).find('.cycleElapsed').html(this.secToDur(cycleElapsed / 1000))
+    updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number, overdueCycle: boolean, overdueAverage: boolean): void {
+        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed))
         if (this.cycle > 1) {
-            $(this.element).find('.totalElapsed').html(this.secToDur(totalElapsed / 1000))
-            $(this.element).find('.averageElapsed').html(this.secToDur(averageElapsed / 1000))
+            $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed))
+            $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed))
         }
-
-        if (this.alertAfter == 0) return
-
-        if (cycleElapsed > this.alertAfter) {
-            $(this.element).find('.cycleElapsed').addClass('alert')
-        }
-
-        if (averageElapsed > this.alertAfter) {
-            $(this.element).find('.averageElapsed').addClass('alert')
-        }
+        if (overdueCycle) $(this.element).find('.cycleElapsed').addClass('alert')
+        if (overdueAverage) $(this.element).find('.averageElapsed').addClass('alert')
     }
 
 
@@ -194,14 +189,14 @@ export class Reflow {
     }
 
 
-    secToDur(seconds: number): string {
-        const d: number = Math.floor(seconds / (3600 * 24))
-        const h: number = Math.floor(seconds % (3600 * 24) / 3600)
-        const m: number = Math.floor(seconds % 3600 / 60)
-        const s: number = Math.floor(seconds % 60)
+    MillisecToDur(milliseconds: number): string {
+        const d: number = Math.floor((milliseconds / 1000) / (3600 * 24))
+        const h: number = Math.floor((milliseconds / 1000) % (3600 * 24) / 3600)
+        const m: number = Math.floor((milliseconds / 1000) % 3600 / 60)
+        const s: number = Math.floor((milliseconds / 1000) % 60)
 
         let elapsed: string = ''
-        if (seconds >= 86400) elapsed += `${d}:`
+        if (milliseconds >= 86400) elapsed += `${d}:`
         elapsed += `${h.toString().padStart(2, '0')}:`
         elapsed += `${m.toString().padStart(2, '0')}:`
         elapsed += `${s.toString().padStart(2, '0')}`
@@ -209,7 +204,8 @@ export class Reflow {
         return elapsed
     }
 
-    durToSec(duration: string): number {
+
+    durToMillisec(duration: string): number {
         const dur: string[] = duration.split(':')
 
         let s: number = 0

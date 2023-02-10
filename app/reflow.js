@@ -93,11 +93,11 @@ export class Reflow {
             this.label = this.id;
         }
         if (alertAfter) {
-            this.alertAfter = this.durToSec(alertAfter);
+            this.alertAfter = this.durToMillisec(alertAfter);
         }
         this.worker = new Worker('./reflow-worker.js');
         this.worker.onmessage = (event) => {
-            this.updateElement(event.data.cycleElapsed, event.data.totalElapsed, event.data.averageElapsed);
+            this.updateElement(event.data.cycleElapsed, event.data.totalElapsed, event.data.averageElapsed, event.data.overdueCycle, event.data.overdueAverage);
         };
         this.bakeElement();
     }
@@ -118,6 +118,7 @@ export class Reflow {
             startedOn: this.startedOn,
             cycleStartedOn: this.cycleStartedOn,
             cycle: this.cycle,
+            alertAfter: this.alertAfter,
         });
     }
     stop() {
@@ -140,6 +141,7 @@ export class Reflow {
             startedOn: this.startedOn,
             cycleStartedOn: this.cycleStartedOn,
             cycle: this.cycle,
+            alertAfter: this.alertAfter,
         });
     }
     delete() {
@@ -150,20 +152,16 @@ export class Reflow {
         });
         this.worker.terminate();
     }
-    updateElement(cycleElapsed, totalElapsed, averageElapsed) {
-        $(this.element).find('.cycleElapsed').html(this.secToDur(cycleElapsed / 1000));
+    updateElement(cycleElapsed, totalElapsed, averageElapsed, overdueCycle, overdueAverage) {
+        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed));
         if (this.cycle > 1) {
-            $(this.element).find('.totalElapsed').html(this.secToDur(totalElapsed / 1000));
-            $(this.element).find('.averageElapsed').html(this.secToDur(averageElapsed / 1000));
+            $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed));
+            $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed));
         }
-        if (this.alertAfter == 0)
-            return;
-        if (cycleElapsed > this.alertAfter) {
+        if (overdueCycle)
             $(this.element).find('.cycleElapsed').addClass('alert');
-        }
-        if (averageElapsed > this.alertAfter) {
+        if (overdueAverage)
             $(this.element).find('.averageElapsed').addClass('alert');
-        }
     }
     getNewId(length = 6) {
         let chars = 'abcdefghkmnprstuvwxyz23456789'.split('');
@@ -196,20 +194,20 @@ export class Reflow {
             $(e).prop('disabled', false);
         }, timeout);
     }
-    secToDur(seconds) {
-        const d = Math.floor(seconds / (3600 * 24));
-        const h = Math.floor(seconds % (3600 * 24) / 3600);
-        const m = Math.floor(seconds % 3600 / 60);
-        const s = Math.floor(seconds % 60);
+    MillisecToDur(milliseconds) {
+        const d = Math.floor((milliseconds / 1000) / (3600 * 24));
+        const h = Math.floor((milliseconds / 1000) % (3600 * 24) / 3600);
+        const m = Math.floor((milliseconds / 1000) % 3600 / 60);
+        const s = Math.floor((milliseconds / 1000) % 60);
         let elapsed = '';
-        if (seconds >= 86400)
+        if (milliseconds >= 86400)
             elapsed += `${d}:`;
         elapsed += `${h.toString().padStart(2, '0')}:`;
         elapsed += `${m.toString().padStart(2, '0')}:`;
         elapsed += `${s.toString().padStart(2, '0')}`;
         return elapsed;
     }
-    durToSec(duration) {
+    durToMillisec(duration) {
         const dur = duration.split(':');
         let s = 0;
         switch (dur.length) {
