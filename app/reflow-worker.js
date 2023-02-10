@@ -23,14 +23,17 @@ onmessage = (event) => {
         case 'reset':
             intervalID = setInterval(() => {
                 let now = Date.now();
+                let cycleElapsed = now - event.data.cycleStartedOn;
+                let totalElapsed = now - event.data.startedOn;
+                let averageElapsed = totalElapsed / event.data.cycle;
                 postMessage({
-                    cycleElapsed: now - event.data.cycleStartedOn,
-                    totalElapsed: now - event.data.startedOn,
-                    averageElapsed: (now - event.data.startedOn) / event.data.cycle,
+                    cycleElapsed: cycleElapsed,
+                    totalElapsed: totalElapsed,
+                    averageElapsed: averageElapsed,
                     overdueCycle: (event.data.alertAfter > 0 &&
-                        now - event.data.cycleStartedOn > event.data.alertAfter) ? true : false,
+                        cycleElapsed > event.data.alertAfter) ? true : false,
                     overdueAverage: (event.data.alertAfter > 0 &&
-                        (now - event.data.startedOn) / event.data.cycle > event.data.alertAfter) ? true : false,
+                        averageElapsed > event.data.alertAfter) ? true : false,
                 });
             }, updateInterval);
             break;

@@ -195,12 +195,13 @@ export class Reflow {
         }, timeout);
     }
     MillisecToDur(milliseconds) {
-        const d = Math.floor((milliseconds / 1000) / (3600 * 24));
-        const h = Math.floor((milliseconds / 1000) % (3600 * 24) / 3600);
-        const m = Math.floor((milliseconds / 1000) % 3600 / 60);
-        const s = Math.floor((milliseconds / 1000) % 60);
+        const seconds = milliseconds / 1000;
+        const d = Math.floor(seconds / (3600 * 24));
+        const h = Math.floor(seconds % (3600 * 24) / 3600);
+        const m = Math.floor(seconds % 3600 / 60);
+        const s = Math.floor(seconds % 60);
         let elapsed = '';
-        if (milliseconds >= 86400)
+        if (seconds >= 86400)
             elapsed += `${d}:`;
         elapsed += `${h.toString().padStart(2, '0')}:`;
         elapsed += `${m.toString().padStart(2, '0')}:`;

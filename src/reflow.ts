@@ -190,13 +190,14 @@ export class Reflow {
 
 
     MillisecToDur(milliseconds: number): string {
-        const d: number = Math.floor((milliseconds / 1000) / (3600 * 24))
-        const h: number = Math.floor((milliseconds / 1000) % (3600 * 24) / 3600)
-        const m: number = Math.floor((milliseconds / 1000) % 3600 / 60)
-        const s: number = Math.floor((milliseconds / 1000) % 60)
+        const seconds = milliseconds / 1000
+        const d: number = Math.floor(seconds / (3600 * 24))
+        const h: number = Math.floor(seconds % (3600 * 24) / 3600)
+        const m: number = Math.floor(seconds % 3600 / 60)
+        const s: number = Math.floor(seconds % 60)
 
         let elapsed: string = ''
-        if (milliseconds >= 86400) elapsed += `${d}:`
+        if (seconds >= 86400) elapsed += `${d}:`
         elapsed += `${h.toString().padStart(2, '0')}:`
         elapsed += `${m.toString().padStart(2, '0')}:`
         elapsed += `${s.toString().padStart(2, '0')}`
