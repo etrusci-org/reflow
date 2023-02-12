@@ -12,6 +12,6 @@ $(function () {
         timer.add()
         $('.add-new-label').val('')
         $('.add-new-alertAfter').val('')
-        $('.timers').removeClass('hidden')
+        // $('.timers').removeClass('hidden')
     })
 })

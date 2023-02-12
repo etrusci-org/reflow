@@ -3,12 +3,7 @@ body,
 div,
 span,
 input,
-button,
-table,
-tr,
-th,
-td,
-tbody {
+button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -25,10 +20,6 @@ button {
   outline: none;
 }
 
-body {
-  padding: 1rem;
-}
-
 body,
 input,
 button {
@@ -39,6 +30,7 @@ button {
 input,
 button {
   padding: 0.25rem 0.5rem;
+  border: 1px solid;
   border-radius: 0.25rem;
 }
 
@@ -47,39 +39,75 @@ button {
   cursor: pointer;
 }
 
-table {
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-}
-table th,
-table td {
-  padding: 0.25rem 0.5rem;
-}
-table td {
-  border: 1px dotted;
+.app {
+  padding: 1rem 0 0 1rem;
 }
 
 .add-new-form {
   margin-bottom: 1rem;
 }
 
-.timers .label {
-  text-transform: uppercase;
+.timers .timer {
+  display: inline-block;
+  margin: 0 1rem 1rem 0;
+  padding: 0.5rem;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  vertical-align: top;
 }
-.timers .label,
-.timers .cycle,
-.timers .cycleElapsed {
+.timers .timer div {
+  margin: 0 0 0.25rem 0;
+}
+.timers .timer .cycleElapsed,
+.timers .timer .alertAfter {
+  display: inline-block;
+}
+.timers .timer .label {
+  font-size: 1.5rem;
   font-weight: bold;
+  text-transform: uppercase;
+  padding: 0 0 0.5rem 0;
+  border-bottom: 1px solid;
 }
-.timers .averageElapsed {
+.timers .timer .cycle {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0.5rem 0;
+  vertical-align: middle;
+}
+.timers .timer .cycleElapsed {
+  font-family: monospace;
+  font-size: 1.3rem;
+  font-weight: bold;
+  vertical-align: middle;
+}
+.timers .timer .alertAfter {
+  font-variant-position: super;
+}
+.timers .timer .totalElapsed {
+  font-family: monospace;
+  margin: 0.5rem 0 0 0;
+}
+.timers .timer .averageElapsed {
+  font-family: monospace;
   font-style: italic;
+  margin: 0.5rem 0 0 0;
 }
-.timers .label,
-.timers .cycle,
-.timers .cycleElapsed,
-.timers .totalElapsed,
-.timers .averageElapsed {
+.timers .timer .ctrl {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 1rem;
+  column-gap: 1rem;
+  padding: 0.5rem 0 0 0;
+  margin: 0.5rem 0 0 0;
+  border-top: 1px solid;
+}
+.timers .timer .label,
+.timers .timer .alertAfter,
+.timers .timer .cycle,
+.timers .timer .cycleElapsed,
+.timers .timer .totalElapsed,
+.timers .timer .averageElapsed {
   cursor: help;
 }
 
@@ -87,42 +115,138 @@ table td {
   display: none;
 }
 
+/*
 body {
-  color: #ccc;
-  background-color: #111;
+    padding: 1rem;
 }
+
+
+body,
+input,
+button {
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
 
 input,
 button {
-  color: #ccc;
-  background-color: #333;
-}
-input:hover,
-button:hover {
-  color: #e2e2e2;
-  background-color: #444;
+    padding: .25rem .5rem;
+    border-radius: .25rem;
 }
 
-button:active {
-  color: #ffffff;
-  background-color: #666;
-}
-button[disabled] {
-  color: #666;
-  background-color: #444;
+
+button {
+    font-weight: bold;
+    cursor: pointer;
 }
 
-table th {
-  color: #666;
-}
-table td {
-  border-color: #666;
-}
-table tr:hover td,
-table tr:focus td {
-  background-color: #1f1f1f;
+
+table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: .25rem .5rem;
+    }
+
+    td {
+        border: 1px dotted;
+    }
 }
 
+
+.add-new-form {
+    margin-bottom: 1rem;
+}
+
+
+.timers {
+    .label {
+        text-transform: uppercase;
+    }
+
+    .label,
+    .cycle,
+    .cycleElapsed {
+        font-weight: bold;
+    }
+
+    .averageElapsed {
+        font-style: italic;
+    }
+
+    .label,
+    .cycle,
+    .cycleElapsed,
+    .totalElapsed,
+    .averageElapsed {
+        cursor: help;
+    }
+}
+
+
+.hidden {
+    display: none;
+}
+*/
 .alert {
   color: #ff9900;
 }
+
+/*
+body {
+    color: #ccc;
+    background-color: #111;
+}
+
+
+input,
+button {
+    color: #ccc;
+    background-color: #333;
+
+    &:hover {
+        color: #e2e2e2;
+        background-color: #444;
+    }
+}
+
+
+button {
+    &:active {
+        color: #ffffff;
+        background-color: #666;
+    }
+
+    &[disabled] {
+        color: #666;
+        background-color: #444;
+    }
+}
+
+
+table {
+    th {
+        color: #666;
+    }
+
+    td {
+        border-color: #666;
+    }
+
+    tr:hover,
+    tr:focus {
+        td {
+            background-color: #1f1f1f;
+        }
+    }
+}
+
+
+.alert {
+    color: #ff9900;
+}
+*/

@@ -64,26 +64,27 @@ export class Reflow {
             enumerable: true,
             configurable: true,
             writable: true,
-            value: '.timers tbody'
+            value: 'div.timers'
         });
         Object.defineProperty(this, "element", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: $(`
-        <tr>
-            <td class="label" title="Label">-</td>
-            <td class="cycle" title="Current cycle">-</td>
-            <td class="cycleElapsed" title="Elapsed time in current cycle">-</td>
-            <td class="totalElapsed" title="Total time elapsed since start">-</td>
-            <td class="averageElapsed" title="Average time elapsed per cycle">-</td>
-            <td class="ctrl">
-                <button class="start" title="Start timer">start</button>
-                <button class="reset hidden" title="Start new cycle">reset</button>
-                <button class="stop hidden" title="Stop timer">stop</button>
-                <button class="delete" title="Delete timer">delete</button>
-            </td>
-        </tr>
+        <div class="timer">
+            <div class="label" title="Identifier of this timer">-</div>
+            <div class="cycle" title="Current cycle">-</div>
+            <div class="cycleElapsed" title="Elapsed time in current cycle">-</div>
+            <div class="alertAfter hidden" title="Maximum target time for each cycle"></div>
+            <div class="totalElapsed" title="Total time elapsed since start">-</div>
+            <div class="averageElapsed" title="Average time elapsed per cycle">-</div>
+            <div class="ctrl">
+                <button class="start" title="Start timer">!</button>
+                <button class="reset hidden" title="Start new cycle">+</button>
+                <button class="stop hidden" title="Stop timer">·</button>
+                <button class="delete" title="Delete timer">×</button>
+            </div>
+        </div>
     `)
         });
         if (label) {
@@ -105,9 +106,10 @@ export class Reflow {
         $(this.element).appendTo(this.elementContainerSelector);
     }
     start() {
+        this.avoidDoubleClick('.ctrl button');
         $(this.element).find('.ctrl .start').remove();
-        $(this.element).find('.ctrl .stop').removeClass('hidden');
         $(this.element).find('.ctrl .reset').removeClass('hidden');
+        $(this.element).find('.ctrl .stop').removeClass('hidden');
         let now = Date.now();
         this.startedOn = now;
         this.cycleStartedOn = now;
@@ -120,14 +122,6 @@ export class Reflow {
             cycle: this.cycle,
             alertAfter: this.alertAfter,
         });
-    }
-    stop() {
-        $(this.element).find('.ctrl .stop').remove();
-        $(this.element).find('.ctrl .reset').remove();
-        this.worker.postMessage({
-            action: 'stop',
-        });
-        this.worker.terminate();
     }
     reset() {
         this.avoidDoubleClick('.ctrl .reset');
@@ -144,8 +138,17 @@ export class Reflow {
             alertAfter: this.alertAfter,
         });
     }
+    stop() {
+        this.avoidDoubleClick('.ctrl button');
+        $(this.element).find('.ctrl .reset').remove();
+        $(this.element).find('.ctrl .stop').remove();
+        this.worker.postMessage({
+            action: 'stop',
+        });
+        this.worker.terminate();
+    }
     delete() {
-        this.avoidDoubleClick('.ctrl .delete', true);
+        this.avoidDoubleClick('.ctrl button', true);
         $(this.element).remove();
         this.worker.postMessage({
             action: 'delete',
@@ -179,7 +182,9 @@ export class Reflow {
         $(this.element).find('.ctrl .delete').on('click', () => { this.delete(); });
         $(this.element).find('.label').text(this.label);
         if (this.alertAfter > 0) {
-            $(this.element).find('.label').append(`<br>(${this.MillisecToDur(this.alertAfter)})`);
+            $(this.element).find('.alertAfter')
+                .text(`(${this.MillisecToDur(this.alertAfter)})`)
+                .removeClass('hidden');
         }
     }
     avoidDoubleClick(elementSelector, everywhere = false, timeout = 750) {

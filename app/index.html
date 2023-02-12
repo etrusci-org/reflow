@@ -10,25 +10,16 @@
     <link rel="stylesheet" href="./style.min.css">
 </head>
 <body>
-    <div class="add-new-form">
-        <button class="add-new">add timer</button>
-        <input class="add-new-label" type="text" placeholder="optional label..." title="any text">
-        <input class="add-new-alertAfter" type="text" placeholder="overdue after..." title="Xd Xh Xm Xs (you can ommit 0-values, e.g. 1h 30s works too)">
-    </div>
+    <div class="app">
+        <div class="add-new-form">
+            <button class="add-new">add timer</button>
+            optional:
+            <input class="add-new-label" type="text" placeholder="identifier label..." title="any text">
+            <input class="add-new-alertAfter" type="text" placeholder="cycle target time..." title="Xd Xh Xm Xs (you can ommit 0-values, e.g. 1h 30s works too)">
+        </div>
 
-    <table class="timers hidden">
-        <thead>
-            <tr>
-                <th>label</th>
-                <th>cycle</th>
-                <th>current</th>
-                <th>total</th>
-                <th>average</th>
-                <th>controls</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+        <div class="timers"></div>
+    </div>
 
     <script src="./vendor/jquery-3.min.js"></script>
 

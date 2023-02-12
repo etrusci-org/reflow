@@ -1,3 +1,128 @@
+body,
+input,
+button {
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
+
+input,
+button {
+    padding: .25rem .5rem;
+    border: 1px solid;
+    border-radius: .25rem;
+}
+
+
+button {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+.app {
+    padding: 1rem 0 0 1rem;
+}
+
+
+.add-new-form {
+    margin-bottom: 1rem;
+}
+
+
+.timers {
+    .timer {
+        display: inline-block;
+        margin: 0 1rem 1rem 0;
+        padding: .5rem;
+        border: 1px solid;
+        border-radius: .25rem;
+        vertical-align: top;
+
+        div {
+            margin: 0 0 .25rem 0;
+        }
+
+        .cycleElapsed,
+        .alertAfter {
+            display: inline-block;
+        }
+
+        .label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0 0 .5rem 0;
+            border-bottom: 1px solid;
+        }
+
+        .cycle {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: .5rem 0 .5rem 0;
+            vertical-align: middle;
+        }
+
+        .cycleElapsed {
+            font-family: monospace;
+            font-size: 1.3rem;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .alertAfter {
+            font-variant-position: super;
+        }
+
+        .totalElapsed {
+            font-family: monospace;
+            margin: .5rem 0 0 0;
+        }
+
+        .averageElapsed {
+            font-family: monospace;
+            font-style: italic;
+            margin: .5rem 0 0 0;
+        }
+
+        .ctrl {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            row-gap: 1rem;
+            column-gap: 1rem;
+            padding: .5rem 0 0 0;
+            margin: .5rem 0 0 0;
+            border-top: 1px solid;
+
+            // .start {}
+            // .reset {}
+            // .stop {}
+            // .delete {}
+        }
+
+        .label,
+        .alertAfter,
+        .cycle,
+        .cycleElapsed,
+        .totalElapsed,
+        .averageElapsed {
+            cursor: help;
+        }
+
+    }
+}
+
+
+.hidden {
+    display: none;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+
+
+/*
 body {
     padding: 1rem;
 }
@@ -73,3 +198,4 @@ table {
 .hidden {
     display: none;
 }
+*/
