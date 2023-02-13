@@ -158,8 +158,8 @@ export class Reflow {
 
     updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number, overdueCycle: boolean, overdueAverage: boolean): void {
         $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed))
+        $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed))
         if (this.cycle > 1) {
-            $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed))
             $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed))
         }
         if (overdueCycle) $(this.element).find('.cycleElapsed').addClass('alert')
@@ -168,7 +168,7 @@ export class Reflow {
 
 
     getNewId(length: number = 6): string {
-        let chars: string[] = 'abcdefghkmnprstuvwxyz23456789'.split('')
+        let chars: string[] = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('')
         let id: string = ''
 
         length = Math.min(length, chars.length)

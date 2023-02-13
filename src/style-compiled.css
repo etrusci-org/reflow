@@ -1,7 +1,6 @@
 html,
 body,
 div,
-span,
 input,
 button {
   margin: 0;
@@ -30,7 +29,6 @@ button {
 input,
 button {
   padding: 0.25rem 0.5rem;
-  border: 1px solid;
   border-radius: 0.25rem;
 }
 
@@ -47,53 +45,57 @@ button {
   margin-bottom: 1rem;
 }
 
-.timers .timer {
+.timer {
   display: inline-block;
   margin: 0 1rem 1rem 0;
   padding: 0.5rem;
-  border: 1px solid;
   border-radius: 0.25rem;
   vertical-align: top;
+  text-align: center;
 }
-.timers .timer div {
+.timer div {
   margin: 0 0 0.25rem 0;
 }
-.timers .timer .cycleElapsed,
-.timers .timer .alertAfter {
+.timer .cycleElapsed,
+.timer .alertAfter {
   display: inline-block;
 }
-.timers .timer .label {
+.timer .label {
+  font-family: serif;
   font-size: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
   padding: 0 0 0.5rem 0;
   border-bottom: 1px solid;
 }
-.timers .timer .cycle {
+.timer .cycle {
+  font-family: monospace;
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0.5rem 0 0.5rem 0;
   vertical-align: middle;
 }
-.timers .timer .cycleElapsed {
+.timer .cycleElapsed {
   font-family: monospace;
   font-size: 1.3rem;
   font-weight: bold;
   vertical-align: middle;
 }
-.timers .timer .alertAfter {
+.timer .alertAfter {
+  font-family: monospace;
   font-variant-position: super;
 }
-.timers .timer .totalElapsed {
+.timer .totalElapsed {
   font-family: monospace;
+  font-size: 1.3rem;
   margin: 0.5rem 0 0 0;
 }
-.timers .timer .averageElapsed {
+.timer .averageElapsed {
   font-family: monospace;
   font-style: italic;
   margin: 0.5rem 0 0 0;
 }
-.timers .timer .ctrl {
+.timer .ctrl {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   row-gap: 1rem;
@@ -102,12 +104,12 @@ button {
   margin: 0.5rem 0 0 0;
   border-top: 1px solid;
 }
-.timers .timer .label,
-.timers .timer .alertAfter,
-.timers .timer .cycle,
-.timers .timer .cycleElapsed,
-.timers .timer .totalElapsed,
-.timers .timer .averageElapsed {
+.timer .label,
+.timer .alertAfter,
+.timer .cycle,
+.timer .cycleElapsed,
+.timer .totalElapsed,
+.timer .averageElapsed {
   cursor: help;
 }
 
@@ -115,138 +117,44 @@ button {
   display: none;
 }
 
-/*
 body {
-    padding: 1rem;
+  color: #2a2f36;
+  background-color: #dce0e7;
 }
-
-
-body,
-input,
-button {
-    font-family: sans-serif;
-    font-size: 1rem;
-}
-
 
 input,
 button {
-    padding: .25rem .5rem;
-    border-radius: .25rem;
+  color: #222529;
+  background-color: #b9c6d8;
+}
+input:hover,
+button:hover {
+  color: #1c3557;
+  background-color: #a6bbd6;
 }
 
-
-button {
-    font-weight: bold;
-    cursor: pointer;
+button:active {
+  color: #174686;
+  background-color: #93aed3;
+}
+button[disabled] {
+  color: #54595f;
+  background-color: #d3d3d3;
 }
 
-
-table {
-    width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-
-    th,
-    td {
-        padding: .25rem .5rem;
-    }
-
-    td {
-        border: 1px dotted;
-    }
+.timer {
+  background-color: #f0f3f7;
 }
-
-
-.add-new-form {
-    margin-bottom: 1rem;
+.timer .label,
+.timer .cycle,
+.timer .cycleElapsed {
+  color: #174686;
 }
-
-
-.timers {
-    .label {
-        text-transform: uppercase;
-    }
-
-    .label,
-    .cycle,
-    .cycleElapsed {
-        font-weight: bold;
-    }
-
-    .averageElapsed {
-        font-style: italic;
-    }
-
-    .label,
-    .cycle,
-    .cycleElapsed,
-    .totalElapsed,
-    .averageElapsed {
-        cursor: help;
-    }
+.timer .label,
+.timer .ctrl {
+  border-color: #c8cdd3;
 }
-
-
-.hidden {
-    display: none;
-}
-*/
-.alert {
-  color: #ff9900;
-}
-
-/*
-body {
-    color: #ccc;
-    background-color: #111;
-}
-
-
-input,
-button {
-    color: #ccc;
-    background-color: #333;
-
-    &:hover {
-        color: #e2e2e2;
-        background-color: #444;
-    }
-}
-
-
-button {
-    &:active {
-        color: #ffffff;
-        background-color: #666;
-    }
-
-    &[disabled] {
-        color: #666;
-        background-color: #444;
-    }
-}
-
-
-table {
-    th {
-        color: #666;
-    }
-
-    td {
-        border-color: #666;
-    }
-
-    tr:hover,
-    tr:focus {
-        td {
-            background-color: #1f1f1f;
-        }
-    }
-}
-
 
 .alert {
-    color: #ff9900;
+  color: #cf4c00;
 }
-*/

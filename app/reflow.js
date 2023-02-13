@@ -157,8 +157,8 @@ export class Reflow {
     }
     updateElement(cycleElapsed, totalElapsed, averageElapsed, overdueCycle, overdueAverage) {
         $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed));
+        $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed));
         if (this.cycle > 1) {
-            $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed));
             $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed));
         }
         if (overdueCycle)
@@ -167,7 +167,7 @@ export class Reflow {
             $(this.element).find('.averageElapsed').addClass('alert');
     }
     getNewId(length = 6) {
-        let chars = 'abcdefghkmnprstuvwxyz23456789'.split('');
+        let chars = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
         let id = '';
         length = Math.min(length, chars.length);
         while (id.length < length) {
