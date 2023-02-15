@@ -9,6 +9,7 @@ export class Reflow {
     averageElapsed: number = 0
 
     alertAfter: number = 0
+    alertAudioElement: JQuery<HTMLAudioElement> = $('audio.alert-audio')
 
     worker: Worker
 
@@ -54,6 +55,10 @@ export class Reflow {
                 event.data.overdueCycle,
                 event.data.overdueAverage,
             )
+
+            if (event.data.overdueCycle > 0) {
+                $(this.alertAudioElement)[0]?.play()
+            }
         }
 
         this.bakeElement()

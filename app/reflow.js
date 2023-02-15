@@ -54,6 +54,12 @@ export class Reflow {
             writable: true,
             value: 0
         });
+        Object.defineProperty(this, "alertAudioElement", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: $('audio.alert-audio')
+        });
         Object.defineProperty(this, "worker", {
             enumerable: true,
             configurable: true,
@@ -99,6 +105,9 @@ export class Reflow {
         this.worker = new Worker('./reflow-worker.js');
         this.worker.onmessage = (event) => {
             this.updateElement(event.data.cycleElapsed, event.data.totalElapsed, event.data.averageElapsed, event.data.overdueCycle, event.data.overdueAverage);
+            if (event.data.overdueCycle > 0) {
+                $(this.alertAudioElement)[0]?.play();
+            }
         };
         this.bakeElement();
     }
