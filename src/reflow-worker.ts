@@ -1,5 +1,5 @@
 let intervalID: null | number = null
-const updateInterval: number = 250
+const updateInterval: number = 177
 
 
 

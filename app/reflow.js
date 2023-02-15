@@ -156,7 +156,7 @@ export class Reflow {
         this.worker.terminate();
     }
     updateElement(cycleElapsed, totalElapsed, averageElapsed, overdueCycle, overdueAverage) {
-        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed));
+        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed, true));
         $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed));
         if (this.cycle > 1) {
             $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed));
@@ -183,7 +183,7 @@ export class Reflow {
         $(this.element).find('.label').text(this.label);
         if (this.alertAfter > 0) {
             $(this.element).find('.alertAfter')
-                .text(`(${this.MillisecToDur(this.alertAfter)})`)
+                .text(`(${this.MillisecToDur(this.alertAfter, false)})`)
                 .removeClass('hidden');
         }
     }
@@ -202,18 +202,20 @@ export class Reflow {
             $(e).prop('disabled', false);
         }, timeout);
     }
-    MillisecToDur(milliseconds) {
+    MillisecToDur(milliseconds, fixedPoint = false) {
         const seconds = milliseconds / 1000;
         const d = Math.floor(seconds / (3600 * 24));
         const h = Math.floor(seconds % (3600 * 24) / 3600);
         const m = Math.floor(seconds % 3600 / 60);
-        const s = Math.floor(seconds % 60);
+        const s = (!fixedPoint) ? Math.floor(seconds % 60) : seconds % 60;
         let elapsed = '';
         if (seconds >= 86400)
             elapsed += `${d}:`;
-        elapsed += `${h}:`;
-        elapsed += `${m.toString().padStart(2, '0')}:`;
-        elapsed += `${s.toString().padStart(2, '0')}`;
+        if (seconds >= 3600)
+            elapsed += `${h}:`;
+        if (seconds >= 60)
+            elapsed += `${m.toFixed(0).padStart(2, '0')}:`;
+        elapsed += (!fixedPoint) ? `${s.toFixed(0).padStart(2, '0')}` : `${s.toFixed(2).padStart(5, '0')}`;
         return elapsed;
     }
     durToMillisec(duration) {

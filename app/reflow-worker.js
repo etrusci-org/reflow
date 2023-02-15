@@ -1,6 +1,6 @@
 "use strict";
 let intervalID = null;
-const updateInterval = 250;
+const updateInterval = 177;
 onmessage = (event) => {
     switch (event.data.action) {
         case 'start':

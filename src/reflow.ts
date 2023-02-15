@@ -157,7 +157,7 @@ export class Reflow {
     // --------------------------------------------------------------------------------------------
 
     updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number, overdueCycle: boolean, overdueAverage: boolean): void {
-        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed))
+        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed, true))
         $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed))
         if (this.cycle > 1) {
             $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed))
@@ -191,7 +191,7 @@ export class Reflow {
 
         if (this.alertAfter > 0) {
             $(this.element).find('.alertAfter')
-                .text(`(${this.MillisecToDur(this.alertAfter)})`)
+                .text(`(${this.MillisecToDur(this.alertAfter, false)})`)
                 .removeClass('hidden')
         }
     }
@@ -216,18 +216,18 @@ export class Reflow {
     }
 
 
-    MillisecToDur(milliseconds: number): string {
+    MillisecToDur(milliseconds: number, fixedPoint: boolean = false): string {
         const seconds = milliseconds / 1000
         const d: number = Math.floor(seconds / (3600 * 24))
         const h: number = Math.floor(seconds % (3600 * 24) / 3600)
         const m: number = Math.floor(seconds % 3600 / 60)
-        const s: number = Math.floor(seconds % 60)
+        const s: number = (!fixedPoint) ? Math.floor(seconds % 60) : seconds % 60
 
         let elapsed: string = ''
         if (seconds >= 86400) elapsed += `${d}:`
-        elapsed += `${h}:`
-        elapsed += `${m.toString().padStart(2, '0')}:`
-        elapsed += `${s.toString().padStart(2, '0')}`
+        if (seconds >= 3600) elapsed += `${h}:`
+        if (seconds >= 60) elapsed += `${m.toFixed(0).padStart(2, '0')}:`
+        elapsed +=  (!fixedPoint) ? `${s.toFixed(0).padStart(2, '0')}` : `${s.toFixed(2).padStart(5, '0')}`
 
         return elapsed
     }

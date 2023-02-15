@@ -92,13 +92,17 @@ button {
     }
 
     .ctrl {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        row-gap: 1rem;
-        column-gap: 1rem;
         padding: .5rem 0 0 0;
         margin: .5rem 0 0 0;
         border-top: 1px solid;
+
+        button {
+            margin: 0 0 0 .5rem;
+
+            &:first-child {
+                margin: 0;
+            }
+        }
 
         // .start {}
         // .reset {}
