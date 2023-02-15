@@ -12,24 +12,8 @@ export class Reflow {
 
     worker: Worker
 
-    // elementContainerSelector: string = '.timers tbody'
-    // element: JQuery<HTMLTableRowElement> = $(`
-    //     <tr>
-    //         <td class="label" title="Label">-</td>
-    //         <td class="cycle" title="Current cycle">-</td>
-    //         <td class="cycleElapsed" title="Elapsed time in current cycle">-</td>
-    //         <td class="totalElapsed" title="Total time elapsed since start">-</td>
-    //         <td class="averageElapsed" title="Average time elapsed per cycle">-</td>
-    //         <td class="ctrl">
-    //             <button class="start" title="Start timer">start</button>
-    //             <button class="reset hidden" title="Start new cycle">reset</button>
-    //             <button class="stop hidden" title="Stop timer">stop</button>
-    //             <button class="delete" title="Delete timer">delete</button>
-    //         </td>
-    //     </tr>
-    // `)
     elementContainerSelector: string = 'div.timers'
-    element: JQuery<HTMLTableRowElement> = $(`
+    element: JQuery<HTMLDivElement> = $(`
         <div class="timer">
             <div class="label" title="Identifier of this timer">-</div>
             <div class="cycle" title="Current cycle">-</div>
