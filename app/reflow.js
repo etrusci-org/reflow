@@ -156,7 +156,7 @@ export class Reflow {
         this.worker.terminate();
     }
     updateElement(cycleElapsed, totalElapsed, averageElapsed, overdueCycle, overdueAverage) {
-        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed, true));
+        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed));
         $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed));
         if (this.cycle > 1) {
             $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed));
@@ -183,7 +183,7 @@ export class Reflow {
         $(this.element).find('.label').text(this.label);
         if (this.alertAfter > 0) {
             $(this.element).find('.alertAfter')
-                .text(`(${this.MillisecToDur(this.alertAfter, false)})`)
+                .text(`(${this.MillisecToDur(this.alertAfter)})`)
                 .removeClass('hidden');
         }
     }

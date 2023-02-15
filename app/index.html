@@ -11,13 +11,25 @@
 </head>
 <body>
     <div class="app">
+        <div class="timers hidden"></div>
+
         <div class="add-new-form">
-            <button class="add-new">add timer</button>
-            <input class="add-new-label" type="text" placeholder="identifier label..." title="any text">
-            <input class="add-new-alertAfter" type="text" placeholder="cycle target time..." title="Xd Xh Xm Xs (you can ommit 0-values, e.g. 1h 30s works too)">
+            <p><button class="add-new">add timer</button></p>
+            <p><input class="add-new-label" type="text" placeholder="identifier label..." title="any text"> (optional)</p>
+            <p><input class="add-new-alertAfter" type="text" placeholder="cycle target time..." title="Xd Xh Xm Xs (you can ommit 0-values, e.g. 1h 30s works too)"> (optional)</p>
         </div>
 
-        <div class="timers"></div>
+        <div class="import-set-form">
+            <p><button class="import-set">import timer set</button></p>
+            <p>
+                <textarea class="import-set-code"
+                    placeholder="label:optional target time
+                        check fire:45m
+                        hydrate
+                        ..."
+                    title="identifier label:cycle target time (one per line, you can ommit cycle target time)"></textarea>
+            </p>
+        </div>
     </div>
 
     <script src="./vendor/jquery-3.min.js"></script>
