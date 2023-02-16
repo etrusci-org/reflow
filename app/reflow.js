@@ -172,6 +172,9 @@ export class Reflow {
     delete() {
         this.avoidDoubleClick('.ctrl button', true);
         $(this.element).remove();
+        if ($('div.timer').length == 0) {
+            $(this.elementContainerSelector).addClass('hidden');
+        }
         this.worker.postMessage({
             action: 'delete',
         });
