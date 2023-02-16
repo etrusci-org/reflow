@@ -1,4 +1,4 @@
-## vendor/alert.mp3
+## src/alert.mp3
 
 532632__svurucu__b_d_2.wav <https://freesound.org/people/svurucu/sounds/532632/>
 
