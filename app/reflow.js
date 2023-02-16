@@ -1,5 +1,5 @@
 export class Reflow {
-    constructor(label, alertAfter) {
+    constructor(label, alertAfter, alertAudioVolume) {
         Object.defineProperty(this, "id", {
             enumerable: true,
             configurable: true,
@@ -54,6 +54,12 @@ export class Reflow {
             writable: true,
             value: 0
         });
+        Object.defineProperty(this, "alertAudioVolume", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 1.0
+        });
         Object.defineProperty(this, "alertAudio", {
             enumerable: true,
             configurable: true,
@@ -102,6 +108,13 @@ export class Reflow {
         if (alertAfter) {
             this.alertAfter = this.durToMillisec(alertAfter);
         }
+        if (alertAudioVolume) {
+            let vol = parseFloat(alertAudioVolume);
+            if (vol >= 0.0 || vol <= 1.0) {
+                this.alertAudioVolume = vol;
+            }
+        }
+        this.alertAudio.volume = this.alertAudioVolume;
         this.worker = new Worker('./reflow-worker.js');
         this.worker.onmessage = (event) => {
             this.updateElement(event.data.cycleElapsed, event.data.totalElapsed, event.data.averageElapsed, event.data.overdueCycle, event.data.overdueAverage);

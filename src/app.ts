@@ -7,11 +7,13 @@ $(function () {
     $('.add-new').on('click', () => {
         let label = $('.add-new-label').val()
         let alertAfter = $('.add-new-alertAfter').val()
+        let alertAudioVolume = $('.add-new-alertAudioVolume').val()
 
         if (typeof(label) !== 'string') return
         if (typeof(alertAfter) !== 'string') return
+        if (typeof(alertAudioVolume) !== 'string') return
 
-        let timer = new Reflow(label, alertAfter)
+        let timer = new Reflow(label, alertAfter, alertAudioVolume)
         console.log(timer)
         timer.add()
 
