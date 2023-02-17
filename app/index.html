@@ -14,12 +14,55 @@
         <div class="timers hidden"></div>
 
         <div class="add-new-form">
+            <h2>CREATE NEW TIMER</h2>
+            <p>
+                <label>Identifier Label</label><br>
+                <small>Optional. Any text. Default: random</small>
+            </p>
+            <p>
+                <input class="add-new-label" type="text">
+            </p>
+            <p>
+                <label>Cycle Target Time</label><br>
+                <small>Optional. <code>Xd Xh Xm Xs</code>. You can ommit 0-values, e.g. <code>1h 30s</code> works too. Default: none</small>
+            </p>
+            <p>
+                <input class="add-new-alertAfter" type="text">
+            </p>
+            <div class="add-new-alertOpt hidden">
+                <p>
+                    <label>Audio Alert Volume</label><br>
+                    <small>Only applies if cycle target time is set.</small>
+                </p>
+                <p>
+                    <span class="add-new-alertAudioVolumeValue">1.0</span>
+                    <input class="add-new-alertAudioVolume" type="range" min="0.0" max="1.0" step="0.1" value="1.0">
+                </p>
+            </div>
+            <p>
+                <button class="add-new">create</button>
+            </p>
+        </div>
+
+        <div class="import-set-form">
+            <h2>IMPORT TIMER SET</h2>
+            <p>
+                <label>Set Code</label><br>
+                <small>One timer per line. <code>label:cycle targe time:audio alert volume</code>. All fields except the label are optional.</small>
+            </p>
+            <p>
+                <textarea class="import-set-code"></textarea>
+            </p>
+            <p><button class="import-set">import</button></p>
+        </div>
+
+
+        <!--
+        <div class="add-new-form">
             <p><button class="add-new">add timer</button></p>
             <p><input class="add-new-label" type="text" placeholder="identifier label..." title="any text"> (optional)</p>
             <p><input class="add-new-alertAfter" type="text" placeholder="cycle target time..." title="Xd Xh Xm Xs (you can ommit 0-values, e.g. 1h 30s works too)"> (optional)</p>
-            <p>
-                <input class="add-new-alertAudioVolume" type="number" min="0.0" max="1.0" step="0.1" placeholder="alert audio volume" title="only applies if cycle target time is set. 0.0 = 0%, 1.0 = 100%"> (default: 1.0)
-            </p>
+            <p><input class="add-new-alertAudioVolume" type="range" min="0.0" max="1.0" step="0.1" value="1.0" placeholder="alert audio volume" title="only applies if cycle target time is set. 0.0 = 0%, 1.0 = 100%"> (audio alert volume)</p>
         </div>
 
         <div class="import-set-form">
@@ -33,6 +76,8 @@
                     title="identifier label:cycle target time:alert audio volume (one per line, you can ommit cycle target time and alert audio volume)"></textarea>
             </p>
         </div>
+        -->
+
     </div>
 
     <script src="./vendor/jquery-3.min.js"></script>

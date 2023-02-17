@@ -124,6 +124,7 @@ export class Reflow {
             }
         };
         this.bakeElement();
+        console.debug(this);
     }
     add() {
         $(this.element).appendTo(this.elementContainerSelector);

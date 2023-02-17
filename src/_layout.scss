@@ -1,4 +1,5 @@
 body,
+label,
 input,
 textarea,
 button {
@@ -7,8 +8,32 @@ button {
 }
 
 
+h2 {
+    font-family: serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+}
+
+
 p {
-    margin-bottom: .25rem;
+    margin-bottom: .5rem;
+}
+
+
+label {
+    font-weight: bold;
+}
+
+
+small,
+code {
+    font-size: .8rem;
+}
+
+
+code {
+    font-family: monospace;
 }
 
 
@@ -23,6 +48,10 @@ button {
 
 input {
     width: 13rem;
+
+    &[type=range] {
+        width: 11rem;
+    }
 }
 
 

@@ -1,7 +1,11 @@
 html,
 body,
+h2,
 div,
 p,
+label,
+small,
+code,
 input,
 textarea,
 button {
@@ -23,6 +27,7 @@ button {
 }
 
 body,
+label,
 input,
 textarea,
 button {
@@ -30,8 +35,28 @@ button {
   font-size: 1rem;
 }
 
+h2 {
+  font-family: serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
+}
+
 p {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+small,
+code {
+  font-size: 0.8rem;
+}
+
+code {
+  font-family: monospace;
 }
 
 input,
@@ -44,6 +69,9 @@ button {
 
 input {
   width: 13rem;
+}
+input[type=range] {
+  width: 11rem;
 }
 
 textarea {
@@ -146,6 +174,15 @@ button {
 body {
   color: #2a2f36;
   background-color: #dce0e7;
+}
+
+small {
+  color: #54595f;
+}
+
+code {
+  font-family: monospace;
+  background-color: #c8cdd3;
 }
 
 input,

@@ -4,6 +4,7 @@ import { Reflow } from "./reflow.js"
 $(function () {
     console.log('R E F L O W')
 
+
     $('.add-new').on('click', () => {
         let label = $('.add-new-label').val()
         let alertAfter = $('.add-new-alertAfter').val()
@@ -14,13 +15,13 @@ $(function () {
         if (typeof(alertAudioVolume) !== 'string') return
 
         let timer = new Reflow(label, alertAfter, alertAudioVolume)
-        console.log(timer)
         timer.add()
 
         $('.add-new-label').val('')
         $('.add-new-alertAfter').val('')
         $('.timers').removeClass('hidden')
     })
+
 
     $('.import-set').on('click', () => {
         let code = $('.import-set-code').val()
@@ -31,12 +32,29 @@ $(function () {
             if (v) {
                 let tc = v.split(':')
                 let timer = new Reflow((tc[0]) ? tc[0] : '', (tc[1]) ? tc[1] : '', (tc[2]) ? tc[2] : '')
-                console.log(timer)
                 timer.add()
             }
         })
 
         $('.import-set-code').val('')
         $('.timers').removeClass('hidden')
+    })
+
+
+    $('.add-new-alertAfter').on('keyup', () => {
+        if ($('.add-new-alertAfter').val()) {
+            $('.add-new-alertOpt').removeClass('hidden')
+        }
+        else {
+            $('.add-new-alertOpt').addClass('hidden')
+        }
+    })
+
+
+    $('.add-new-alertAudioVolume').on('change', () => {
+        let vol = $('.add-new-alertAudioVolume').val()
+        if (!vol || typeof(vol) !== 'string') return
+        vol = parseFloat(vol).toFixed(1)
+        $('.add-new-alertAudioVolumeValue').text(vol)
     })
 })
