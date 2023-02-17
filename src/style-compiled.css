@@ -1,5 +1,6 @@
 html,
 body,
+h1,
 h2,
 div,
 p,
@@ -35,6 +36,12 @@ button {
   font-size: 1rem;
 }
 
+h1 {
+  font-family: serif;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
 h2 {
   font-family: serif;
   font-size: 1.5rem;
@@ -44,6 +51,19 @@ h2 {
 
 p {
   margin-bottom: 0.5rem;
+}
+
+a:link, a:visited {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+}
+a:hover, a:focus {
+  text-decoration-line: none;
+  text-decoration-style: dashed;
+}
+a:active {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
 }
 
 label {
@@ -86,7 +106,7 @@ button {
 }
 
 .app {
-  padding: 1rem 0 0 1rem;
+  padding: 1rem;
 }
 
 .timers {
@@ -167,6 +187,13 @@ button {
   margin: 0 0 2rem 0;
 }
 
+.footer {
+  font-family: serif;
+  font-size: 0.8rem;
+  margin: 8rem 0 1rem 0;
+  text-align: center;
+}
+
 .hidden {
   display: none;
 }
@@ -174,6 +201,20 @@ button {
 body {
   color: #2a2f36;
   background-color: #dce0e7;
+}
+
+h2 {
+  color: #174686;
+}
+
+a:link, a:visited {
+  color: #2a2f36;
+}
+a:hover, a:focus {
+  color: #174686;
+}
+a:active {
+  color: #174686;
 }
 
 small {

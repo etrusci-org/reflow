@@ -15,6 +15,7 @@ $(function () {
         timer.add();
         $('.add-new-label').val('');
         $('.add-new-alertAfter').val('');
+        $('.add-new-alertOpt').addClass('hidden');
         $('.timers').removeClass('hidden');
     });
     $('.import-set').on('click', () => {

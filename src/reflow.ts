@@ -232,10 +232,10 @@ export class Reflow {
         const s: number = (!fixedPoint) ? Math.floor(seconds % 60) : seconds % 60
 
         let elapsed: string = ''
-        if (seconds >= 86400) elapsed += `${d}:`
-        if (seconds >= 3600) elapsed += `${h}:`
-        if (seconds >= 60) elapsed += `${m.toFixed(0).padStart(2, '0')}:`
-        elapsed +=  (!fixedPoint) ? `${s.toFixed(0).padStart(2, '0')}` : `${s.toFixed(2).padStart(5, '0')}`
+        if (seconds >= 86400) elapsed += `${d}d `
+        if (seconds >= 3600) elapsed += `${h}h `
+        if (seconds >= 60) elapsed += `${m.toFixed(0).padStart(2, '0')}m `
+        elapsed +=  (!fixedPoint) ? `${s.toFixed(0).padStart(2, '0')}s` : `${s.toFixed(2).padStart(5, '0')}s`
 
         return elapsed
     }

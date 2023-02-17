@@ -4,6 +4,28 @@ body {
 }
 
 
+h2 {
+    color: #174686;
+}
+
+
+a {
+    &:link,
+    &:visited {
+        color: #2a2f36;
+    }
+
+    &:hover,
+    &:focus {
+        color: #174686;
+    }
+
+    &:active {
+        color: #174686;
+    }
+}
+
+
 small {
     color: #54595f;
 }
