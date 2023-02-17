@@ -18,7 +18,7 @@
             <p><input class="add-new-label" type="text" placeholder="identifier label..." title="any text"> (optional)</p>
             <p><input class="add-new-alertAfter" type="text" placeholder="cycle target time..." title="Xd Xh Xm Xs (you can ommit 0-values, e.g. 1h 30s works too)"> (optional)</p>
             <p>
-                <input class="add-new-alertAudioVolume" type="number" min="0.0" max="1.0" step="0.1" placeholder="alert audio volume" title="0.0 = 0%, 1.0 = 100%"> (default: 1.0)
+                <input class="add-new-alertAudioVolume" type="number" min="0.0" max="1.0" step="0.1" placeholder="alert audio volume" title="only applies if cycle target time is set. 0.0 = 0%, 1.0 = 100%"> (default: 1.0)
             </p>
         </div>
 
@@ -26,11 +26,11 @@
             <p><button class="import-set">import timer set</button></p>
             <p>
                 <textarea class="import-set-code"
-                    placeholder="label:optional target time
-                        check fire:45m
-                        hydrate
+                    placeholder="do something
+                        check fire:45m 30s
+                        hydrate:30m:0.5
                         ..."
-                    title="identifier label:cycle target time (one per line, you can ommit cycle target time)"></textarea>
+                    title="identifier label:cycle target time:alert audio volume (one per line, you can ommit cycle target time and alert audio volume)"></textarea>
             </p>
         </div>
     </div>

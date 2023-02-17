@@ -30,7 +30,7 @@ $(function () {
         code.split('\n').forEach(v => {
             if (v) {
                 let tc = v.split(':')
-                let timer = new Reflow((tc[0]) ? tc[0] : '', (tc[1]) ? tc[1] : '')
+                let timer = new Reflow((tc[0]) ? tc[0] : '', (tc[1]) ? tc[1] : '', (tc[2]) ? tc[2] : '')
                 console.log(timer)
                 timer.add()
             }
