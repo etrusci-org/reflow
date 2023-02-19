@@ -241,8 +241,8 @@ export class Reflow {
         if (seconds >= 3600)
             elapsed += `${h}h `;
         if (seconds >= 60)
-            elapsed += `${m.toFixed(0).padStart(2, '0')}m `;
-        elapsed += (!fixedPoint) ? `${s.toFixed(0).padStart(2, '0')}s` : `${s.toFixed(2).padStart(5, '0')}s`;
+            elapsed += `${m}m `;
+        elapsed += (!fixedPoint) ? `${s.toFixed(0)}s` : `${s.toFixed(2)}s`;
         return elapsed;
     }
     durToMillisec(duration) {

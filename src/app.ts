@@ -2,7 +2,7 @@ import { Reflow } from "./reflow.js"
 
 
 $(function () {
-    console.log('R E F L O W')
+    console.log('R E F L O W  |  https://github.com/etrusci-org/reflow/#readme')
 
 
     $('.add-new').on('click', () => {
@@ -42,17 +42,20 @@ $(function () {
     })
 
 
-    $('.add-new-alertAfter').on('keyup', () => {
-        if ($('.add-new-alertAfter').val()) {
-            $('.add-new-alertOpt').removeClass('hidden')
+    $('.add-new-alertAfter').on('input', () => {
+        let vol = $('.add-new-alertAudioVolume').val()
+
+        if (!vol || typeof(vol) !== 'string') {
+            $('.add-new-alertOpt').addClass('hidden')
         }
         else {
-            $('.add-new-alertOpt').addClass('hidden')
+            $('.add-new-alertOpt').removeClass('hidden')
+            $('.add-new-alertAudioVolumeValue').text(vol)
         }
     })
 
 
-    $('.add-new-alertAudioVolume').on('change', () => {
+    $('.add-new-alertAudioVolume').on('input', () => {
         let vol = $('.add-new-alertAudioVolume').val()
         if (!vol || typeof(vol) !== 'string') return
         vol = parseFloat(vol).toFixed(1)

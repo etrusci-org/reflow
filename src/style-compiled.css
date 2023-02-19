@@ -37,9 +37,7 @@ button {
 }
 
 h1 {
-  font-family: serif;
-  font-size: 0.7rem;
-  font-weight: bold;
+  display: none;
 }
 
 h2 {
@@ -183,15 +181,26 @@ button {
   cursor: help;
 }
 
+.forms {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  column-gap: 3rem;
+  row-gap: 1rem;
+}
+
 .add-new-form {
+  width: 20rem;
   margin: 0 0 2rem 0;
+}
+
+.import-set-form {
+  width: 20rem;
 }
 
 .footer {
   font-family: serif;
-  font-size: 0.8rem;
-  margin: 8rem 0 1rem 0;
-  text-align: center;
+  margin: 4rem 0 0 0;
 }
 
 .hidden {
