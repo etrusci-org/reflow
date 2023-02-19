@@ -61,4 +61,11 @@ $(function () {
         vol = parseFloat(vol).toFixed(1)
         $('.add-new-alertAudioVolumeValue').text(vol)
     })
+
+
+    $('.change-theme').on('change', () => {
+        let theme = $('.change-theme').val()
+        if (!theme || typeof(theme) !== 'string') return
+        $('link[href^="./color-"]').attr('href', `./color-${theme}.min.css`)
+    })
 })

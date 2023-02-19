@@ -9,11 +9,12 @@
     },
     "tasks": [
         {
-            "label": "timerz build",
+            "label": "reflow build",
             "dependsOn": [
                 "tsc-watch",
                 "sass-watch",
                 "csso-watch",
+                "bake-color",
             ],
             "group": {
                 "kind": "build",
@@ -48,6 +49,16 @@
             "type": "shell",
             "command": "bash csso-watch.sh",
             "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "devtools"
+            }
+        },
+        {
+            "label": "bake-color",
+            "type": "shell",
+            "command": "bash bake-color.sh",
+            "isBackground": false,
             "problemMatcher": [],
             "presentation": {
                 "group": "devtools"

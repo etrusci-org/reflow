@@ -9,6 +9,7 @@ small,
 code,
 input,
 textarea,
+select,
 button {
   margin: 0;
   padding: 0;
@@ -23,6 +24,7 @@ body {
 
 input,
 textarea,
+select,
 button {
   outline: none;
 }
@@ -79,10 +81,11 @@ code {
 
 input,
 textarea,
+select,
 button {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 input {
@@ -185,13 +188,12 @@ button {
   display: flex;
   flex-direction: row;
   flex-flow: row wrap;
-  column-gap: 3rem;
+  column-gap: 2rem;
   row-gap: 1rem;
 }
 
 .add-new-form {
   width: 20rem;
-  margin: 0 0 2rem 0;
 }
 
 .import-set-form {
@@ -200,75 +202,9 @@ button {
 
 .footer {
   font-family: serif;
-  margin: 4rem 0 0 0;
+  margin: 6rem 0 0 0;
 }
 
 .hidden {
   display: none;
-}
-
-body {
-  color: #2a2f36;
-  background-color: #dce0e7;
-}
-
-h2 {
-  color: #174686;
-}
-
-a:link, a:visited {
-  color: #2a2f36;
-}
-a:hover, a:focus {
-  color: #174686;
-}
-a:active {
-  color: #174686;
-}
-
-small {
-  color: #54595f;
-}
-
-code {
-  font-family: monospace;
-  background-color: #c8cdd3;
-}
-
-input,
-textarea,
-button {
-  color: #222529;
-  background-color: #b9c6d8;
-}
-input:hover,
-textarea:hover,
-button:hover {
-  color: #1c3557;
-  background-color: #a6bbd6;
-}
-
-button:active {
-  color: #174686;
-  background-color: #93aed3;
-}
-button[disabled] {
-  color: #54595f;
-  background-color: #d3d3d3;
-}
-
-.timer {
-  background-color: #f0f3f7;
-}
-.timer .label,
-.timer .cycle,
-.timer .cycleElapsed {
-  color: #174686;
-}
-.timer .label,
-.timer .ctrl {
-  border-color: #c8cdd3;
-}
-.timer .alert {
-  color: #cf4c00;
 }

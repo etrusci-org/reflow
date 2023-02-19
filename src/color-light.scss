@@ -1,0 +1,87 @@
+@import '_var';
+
+
+body {
+    color: $color-shark2;
+    background-color: $color-geyser;
+}
+
+
+h2 {
+    color: $color-chathams-blue;
+}
+
+
+a {
+    &:link,
+    &:visited {
+        color: $color-shark2;
+    }
+
+    &:hover,
+    &:focus {
+        color: $color-chathams-blue;
+    }
+
+    &:active {
+        color: $color-chathams-blue;
+    }
+}
+
+
+small {
+    color: $color-abbey;
+}
+
+
+code {
+    background-color: $color-ghost;
+}
+
+
+input,
+textarea,
+select,
+button {
+    color: $color-shark1;
+    background-color: $color-casper;
+
+    &:hover {
+        color: $color-cello;
+        background-color: $color-pigeon-post;
+    }
+}
+
+
+button {
+    &:active {
+        color: $color-chathams-blue;
+        background-color: $color-polo-blue;
+    }
+
+    &[disabled] {
+        color: $color-abbey;
+        background-color: $color-alto;
+    }
+}
+
+// ------------------------------------------------------------------------------------------------
+
+.timer {
+    background-color: $color-catskill-white;
+
+    .label,
+    .cycle,
+    .cycleElapsed {
+        color: $color-chathams-blue;
+    }
+
+    .label,
+    .ctrl {
+        border-color: $color-ghost;
+    }
+
+    .alert {
+        color: $color-grenadier;
+    }
+}

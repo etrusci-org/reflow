@@ -1,0 +1,66 @@
+body {
+  color: #c8cdd3;
+  background-color: #222529;
+}
+
+h2 {
+  color: #93aed3;
+}
+
+a:link, a:visited {
+  color: #c8cdd3;
+}
+a:hover, a:focus {
+  color: #93aed3;
+}
+a:active {
+  color: #a6bbd6;
+}
+
+small {
+  color: #93aed3;
+}
+
+code {
+  background-color: #54595f;
+}
+
+input,
+textarea,
+select,
+button {
+  color: #222529;
+  background-color: #54595f;
+}
+input:hover,
+textarea:hover,
+select:hover,
+button:hover {
+  color: #1c3557;
+  background-color: #93aed3;
+}
+
+button:active {
+  color: #174686;
+  background-color: #dce0e7;
+}
+button[disabled] {
+  color: #2a2f36;
+  background-color: #222529;
+}
+
+.timer {
+  background-color: #2a2f36;
+}
+.timer .label,
+.timer .cycle,
+.timer .cycleElapsed {
+  color: #93aed3;
+}
+.timer .label,
+.timer .ctrl {
+  border-color: #54595f;
+}
+.timer .alert {
+  color: #cf4c00;
+}

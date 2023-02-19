@@ -64,10 +64,11 @@ code {
 
 input,
 textarea,
+select,
 button {
     padding: .25rem .5rem;
     border-radius: .25rem;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 
@@ -196,14 +197,13 @@ button {
     display: flex;
     flex-direction: row;
     flex-flow: row wrap;
-    column-gap: 3rem;
+    column-gap: 2rem;
     row-gap: 1rem;
 }
 
 
 .add-new-form {
     width: 20rem;
-    margin: 0 0 2rem 0;
 }
 
 
@@ -214,7 +214,7 @@ button {
 
 .footer {
     font-family: serif;
-    margin: 4rem 0 0 0;
+    margin: 6rem 0 0 0;
 }
 
 
