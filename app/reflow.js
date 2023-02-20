@@ -67,6 +67,12 @@ export class Reflow {
             writable: true,
             value: new Audio(reflowAudioAlertBin)
         });
+        Object.defineProperty(this, "alertAudioMuted", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: false
+        });
         Object.defineProperty(this, "worker", {
             enumerable: true,
             configurable: true,
@@ -92,6 +98,7 @@ export class Reflow {
             <div class="totalElapsed" title="Total time elapsed since start">-</div>
             <div class="averageElapsed" title="Average time elapsed per cycle">-</div>
             <div class="ctrl">
+                <button class="mute hidden" title="Mute audio alert until next cycle">/</button>
                 <button class="start" title="Start timer">!</button>
                 <button class="reset hidden" title="Start new cycle">+</button>
                 <button class="stop hidden" title="Stop timer">·</button>
@@ -119,9 +126,6 @@ export class Reflow {
         this.worker = new Worker('./reflow-worker.js');
         this.worker.onmessage = (event) => {
             this.updateElement(event.data.cycleElapsed, event.data.totalElapsed, event.data.averageElapsed, event.data.overdueCycle, event.data.overdueAverage);
-            if (event.data.overdueCycle > 0 && this.alertAudio.paused) {
-                this.alertAudio.play();
-            }
         };
         this.bakeElement();
         console.debug(this);
@@ -151,9 +155,12 @@ export class Reflow {
         this.avoidDoubleClick('.ctrl .reset');
         this.cycleStartedOn = Date.now();
         this.cycle += 1;
+        this.alertAudioMuted = false;
         $(this.element).find('.cycle').text(this.cycle);
         $(this.element).find('.cycleElapsed').removeClass('alert');
         $(this.element).find('.averageElapsed').removeClass('alert');
+        $(this.element).find('.ctrl .mute').addClass('hidden');
+        $(this.element).find('.ctrl .mute').prop('disabled', false);
         this.worker.postMessage({
             action: 'reset',
             startedOn: this.startedOn,
@@ -164,6 +171,7 @@ export class Reflow {
     }
     stop() {
         this.avoidDoubleClick('.ctrl button');
+        $(this.element).find('.ctrl .mute').remove();
         $(this.element).find('.ctrl .reset').remove();
         $(this.element).find('.ctrl .stop').remove();
         this.worker.postMessage({
@@ -182,6 +190,10 @@ export class Reflow {
         });
         this.worker.terminate();
     }
+    mute() {
+        $(this.element).find('.ctrl .mute').prop('disabled', true);
+        this.alertAudioMuted = true;
+    }
     updateElement(cycleElapsed, totalElapsed, averageElapsed, overdueCycle, overdueAverage) {
         $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed));
         $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed));
@@ -192,6 +204,12 @@ export class Reflow {
             $(this.element).find('.cycleElapsed').addClass('alert');
         if (overdueAverage)
             $(this.element).find('.averageElapsed').addClass('alert');
+        if (overdueCycle &&
+            !this.alertAudioMuted &&
+            this.alertAudio.paused) {
+            $(this.element).find('.ctrl .mute').removeClass('hidden');
+            this.alertAudio.play();
+        }
     }
     getNewId(length = 6) {
         let chars = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
@@ -207,6 +225,7 @@ export class Reflow {
         $(this.element).find('.ctrl .reset').on('click', () => { this.reset(); });
         $(this.element).find('.ctrl .stop').on('click', () => { this.stop(); });
         $(this.element).find('.ctrl .delete').on('click', () => { this.delete(); });
+        $(this.element).find('.ctrl .mute').on('click', () => { this.mute(); });
         $(this.element).find('.label').text(this.label);
         if (this.alertAfter > 0) {
             $(this.element).find('.alertAfter')
