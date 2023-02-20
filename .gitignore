@@ -1,4 +1,9 @@
+# brain
 0000/
+
+# jquery types
 node_modules/
-src/*.rpp-bak
+package*.json
+
+# temporary files
 src/*-compiled.css

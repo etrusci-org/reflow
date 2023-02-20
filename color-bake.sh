@@ -3,7 +3,7 @@
 # --- SASS ---
 
 # light
-input="./src/color-light.scss"
+input="./src/scss/color-light.scss"
 output="./src/color-light-compiled.css"
 
 sass \
@@ -14,7 +14,7 @@ sass \
 
 
 # dark
-input="./src/color-dark.scss"
+input="./src/scss/color-dark.scss"
 output="./src/color-dark-compiled.css"
 
 sass \

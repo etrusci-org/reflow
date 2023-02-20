@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-input="./src/style.scss"
+input="./src/scss/style.scss"
 output="./src/style-compiled.css"
 
 sass \
