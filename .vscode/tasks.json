@@ -14,7 +14,7 @@
                 "tsc-watch",
                 "sass-watch",
                 "csso-watch",
-                "bake-color",
+                "color-bake",
             ],
             "group": {
                 "kind": "build",
@@ -55,9 +55,9 @@
             }
         },
         {
-            "label": "bake-color",
+            "label": "color-bake",
             "type": "shell",
-            "command": "bash bake-color.sh",
+            "command": "bash color-bake.sh",
             "isBackground": false,
             "problemMatcher": [],
             "presentation": {

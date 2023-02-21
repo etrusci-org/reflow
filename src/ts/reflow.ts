@@ -110,7 +110,7 @@ export class Reflow {
 
 
     reset(): void {
-        this.avoidDoubleClick('.ctrl .reset')
+        this.avoidDoubleClick('.ctrl button')
 
         this.cycleStartedOn = Date.now()
         this.cycle += 1
