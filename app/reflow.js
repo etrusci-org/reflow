@@ -152,7 +152,7 @@ export class Reflow {
         });
     }
     reset() {
-        this.avoidDoubleClick('.ctrl .reset');
+        this.avoidDoubleClick('.ctrl button');
         this.cycleStartedOn = Date.now();
         this.cycle += 1;
         this.alertAudioMuted = false;
