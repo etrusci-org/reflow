@@ -4,6 +4,3 @@
 # jquery types
 node_modules/
 package*.json
-
-# temporary files
-src/*-compiled.css
