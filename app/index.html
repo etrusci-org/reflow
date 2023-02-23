@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>R E F L O W</title>
+
+    <!-- <link rel="stylesheet" href="./style.min.css"> -->
+    <!-- <link rel="stylesheet" href="./theme-dark.min.css"> -->
+    <style>
+        body {
+            color: #999;
+            background-color: #222;
+        }
+
+        body,
+        input {
+            font-family: sans-serif;
+            font-size: 1rem;
+        }
+
+        .timer {
+            display: inline-block;
+            margin: 0 3rem 3rem 0;
+        }
+
+            h2 {
+                padding: 0;
+                margin: 0 0 0 0;
+            }
+
+            .ctrl {
+                margin: 0 0 .5rem 0;
+            }
+
+            input.label {
+                text-transform: uppercase;
+                width: 100%;
+                max-width: 14rem;
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #999;
+                background: #222;
+                border: 0;
+            }
+
+            table {
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid;
+                padding: .25rem;
+                text-align: left;
+                border-color: #555;
+            }
+
+            td {
+                cursor: help;
+            }
+
+            tr.now td {
+                font-size: 1.5rem;
+            }
+
+            tr.past td {
+                font-size: 1rem;
+                color: #444;
+            }
+
+            tr.past:hover td {
+                color: #999;
+            }
+
+            .overdue.elapsedCycle {
+                color: red;
+            }
+
+            .overdue.elapsedAverage {
+                color: orange;
+            }
+</style>
+</head>
+<body>
+
+    <button class="add">+</button>
+
+
+    <hr>
+
+
+    <div class="timers"></div>
+
+
+    <script src="./lib/vendor/jquery-3.min.js"></script>
+    <script src="./lib/app.js" type="module"></script>
+
+</body>
+</html>
