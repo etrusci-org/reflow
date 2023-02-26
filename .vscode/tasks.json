@@ -2,14 +2,22 @@
 	"version": "2.0.0",
 	"tasks": [
         {
-            "type": "typescript",
-            "tsconfig": "tsconfig.json",
-            "option": "watch",
-            "problemMatcher": [
-                "$tsc-watch"
-            ],
-            "group": "build",
-            "label": "tsc: watch - tsconfig.json"
-        }
+            "label": "tsc watch",
+            "type": "shell",
+            "command": "tsc --watch -p ./tsconfig.json",
+            "group": "build"
+        },
+        {
+            "label": "sass watch",
+            "type": "shell",
+            "command": "sass --watch --update --style expanded --charset --no-source-map ./src/scss/*style.scss ./src/style-compiled.css",
+            "group": "build"
+        },
+        {
+            "label": "csso watch",
+            "type": "shell",
+            "command": "csso --watch --comments none --stat --input-source-map none --source-map none --input ./src/style-compiled.css --output ./app/lib/style.min.css",
+            "group": "build"
+        },
     ]
 }

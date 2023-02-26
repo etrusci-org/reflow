@@ -1,4 +1,4 @@
-import { eHTML, ePastHTML } from './reflow-ui.js'
+import { eHTML } from './reflow-ui.js'
 import { a1Bin } from './reflow-audio.js'
 
 
@@ -58,7 +58,7 @@ export class Reflow {
         $(this.e).find('.ctrl .stop').hide()
         $(this.e).find('.ctrl .volume').hide()
 
-        $(this.e).find('.label').val(this.t.label)
+        $(this.e).find('.label').val(this.t.label).attr('placeholder', this.t.label)
     }
 
 
@@ -96,12 +96,11 @@ export class Reflow {
     reset(): void {
         this.avoidDoubleClick('.ctrl button')
 
-        let ePast: JQuery<HTMLDivElement> = $(ePastHTML)
-        $(ePast).find('.cycle').text(this.t.cycle)
-        $(ePast).find('.elapsedCycle').text(this.msToDur(this.t.elapsedCycle))
-        $(ePast).find('.elapsedTotal').text(this.msToDur(this.t.elapsedTotal))
-        $(ePast).find('.elapsedAverage').text(this.msToDur(this.t.elapsedAverage))
-        $(ePast).insertAfter($(this.e).find('.now'))
+        const pastE = $(this.e).find('.now') .clone()
+        $(pastE).removeClass('now').addClass('past')
+        $(pastE).find('.targetTime').remove()
+        $(pastE).find('.elapsedAverage').attr('colspan', 2)
+        $(pastE).insertAfter($(this.e).find('.now'))
 
         this.t.cycleStartedOn = Date.now()
         this.t.cycle += 1
@@ -148,7 +147,7 @@ export class Reflow {
             this.t.targetTime = this.durToMs(newTargetTime)
 
             if (this.t.targetTime > 0) {
-                $(this.e).find('.now .targetTime').text(this.msToDur(this.t.targetTime))
+                $(this.e).find('.now .targetTime').html(this.msToDur(this.t.targetTime))
                 $(this.e).find('.ctrl .volume').show()
             }
             else {
@@ -157,10 +156,9 @@ export class Reflow {
             }
         }
         else {
+            $(this.e).find('.now .targetTime').text('-')
             $(this.e).find('.ctrl .volume').hide()
         }
-
-        console.log(this.t.targetTime)
     }
 
 
@@ -171,8 +169,6 @@ export class Reflow {
             this.t.volume = parseFloat(newVol)
             this.a.volume = this.t.volume
         }
-
-        console.log(this.t.volume)
     }
 
     // --------------------------------------------------------------------------------------------
@@ -185,12 +181,10 @@ export class Reflow {
         this.t.isOverdueCycle = d.isOverdueCycle
         this.t.isOverdueAverage = d.isOverdueAverage
 
-        console.table(this.t)
-
-        $(this.e).find('.now .cycle').text(this.t.cycle)
-        $(this.e).find('.now .elapsedCycle').text(this.msToDur(this.t.elapsedCycle))
-        $(this.e).find('.now .elapsedTotal').text(this.msToDur(this.t.elapsedTotal))
-        $(this.e).find('.now .elapsedAverage').text(this.msToDur(this.t.elapsedAverage))
+        $(this.e).find('.now .cycle').text(`#${this.t.cycle}`)
+        $(this.e).find('.now .elapsedCycle').html(this.msToDur(this.t.elapsedCycle))
+        $(this.e).find('.now .elapsedTotal').html(this.msToDur(this.t.elapsedTotal))
+        $(this.e).find('.now .elapsedAverage').html(this.msToDur(this.t.elapsedAverage))
 
         if (this.t.isOverdueCycle) {
             $(this.e).find('.now .elapsedCycle').addClass('overdue')
@@ -217,7 +211,7 @@ export class Reflow {
 
     // --------------------------------------------------------------------------------------------
 
-    avoidDoubleClick(elementSelector: string, everywhere: boolean = false, timeout: number = 750): void {
+    avoidDoubleClick(elementSelector: string, everywhere: boolean = false, timeout: number = 1000): void {
         let e: null | JQuery<HTMLElement> = null
 
         if (!everywhere) {
@@ -250,21 +244,22 @@ export class Reflow {
     }
 
 
-    msToDur(milliseconds: number, fixedPoint: boolean = false): string {
+    msToDur(milliseconds: number): string {
         const seconds = milliseconds / 1000
         const d: number = Math.floor(seconds / (3600 * 24))
         const h: number = Math.floor(seconds % (3600 * 24) / 3600)
         const m: number = Math.floor(seconds % 3600 / 60)
-        const s: number = (!fixedPoint) ? Math.floor(seconds % 60) : seconds % 60
+        const s: number = Math.floor(seconds % 60)
 
         let elapsed: string = ''
-        if (seconds >= 86400) elapsed += `${d}d `
-        if (seconds >= 3600) elapsed += `${h}h `
-        if (seconds >= 60) elapsed += `${m}m `
-        elapsed +=  (!fixedPoint) ? `${s.toFixed(0)}s` : `${s.toFixed(2)}s`
+        if (seconds >= 86400) elapsed += `${d}<span class="tunit">d</span> `
+        if (seconds >= 3600) elapsed += `${h}<span class="tunit">h</span> `
+        if (seconds >= 60) elapsed += `${m}<span class="tunit">m</span> `
+        elapsed +=  `${s}<span class="tunit">s</span>`
 
-        return elapsed
+        return (elapsed) ? elapsed : '0<span class="tunit">s</span>'
     }
+
 
     durToMs(duration: string): number {
         const dur: string[] = duration.split(' ')
@@ -301,5 +296,4 @@ export class Reflow {
 
         return s * 1000
     }
-
 }

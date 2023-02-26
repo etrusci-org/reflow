@@ -1,4 +1,4 @@
-import { eHTML, ePastHTML } from './reflow-ui.js';
+import { eHTML } from './reflow-ui.js';
 import { a1Bin } from './reflow-audio.js';
 export class Reflow {
     constructor() {
@@ -54,7 +54,7 @@ export class Reflow {
         $(this.e).find('.ctrl .reset').hide();
         $(this.e).find('.ctrl .stop').hide();
         $(this.e).find('.ctrl .volume').hide();
-        $(this.e).find('.label').val(this.t.label);
+        $(this.e).find('.label').val(this.t.label).attr('placeholder', this.t.label);
     }
     add(targetSelector = '.timers') {
         $(this.e).appendTo(targetSelector);
@@ -79,12 +79,11 @@ export class Reflow {
     }
     reset() {
         this.avoidDoubleClick('.ctrl button');
-        let ePast = $(ePastHTML);
-        $(ePast).find('.cycle').text(this.t.cycle);
-        $(ePast).find('.elapsedCycle').text(this.msToDur(this.t.elapsedCycle));
-        $(ePast).find('.elapsedTotal').text(this.msToDur(this.t.elapsedTotal));
-        $(ePast).find('.elapsedAverage').text(this.msToDur(this.t.elapsedAverage));
-        $(ePast).insertAfter($(this.e).find('.now'));
+        const pastE = $(this.e).find('.now').clone();
+        $(pastE).removeClass('now').addClass('past');
+        $(pastE).find('.targetTime').remove();
+        $(pastE).find('.elapsedAverage').attr('colspan', 2);
+        $(pastE).insertAfter($(this.e).find('.now'));
         this.t.cycleStartedOn = Date.now();
         this.t.cycle += 1;
         this.w.postMessage({
@@ -115,7 +114,7 @@ export class Reflow {
         if (newTargetTime && typeof (newTargetTime) === 'string') {
             this.t.targetTime = this.durToMs(newTargetTime);
             if (this.t.targetTime > 0) {
-                $(this.e).find('.now .targetTime').text(this.msToDur(this.t.targetTime));
+                $(this.e).find('.now .targetTime').html(this.msToDur(this.t.targetTime));
                 $(this.e).find('.ctrl .volume').show();
             }
             else {
@@ -124,9 +123,9 @@ export class Reflow {
             }
         }
         else {
+            $(this.e).find('.now .targetTime').text('-');
             $(this.e).find('.ctrl .volume').hide();
         }
-        console.log(this.t.targetTime);
     }
     changeVolume() {
         const newVol = $(this.e).find('.ctrl .volume').val();
@@ -134,7 +133,6 @@ export class Reflow {
             this.t.volume = parseFloat(newVol);
             this.a.volume = this.t.volume;
         }
-        console.log(this.t.volume);
     }
     onWorkerMessage(d) {
         this.t.cycle = d.cycle;
@@ -143,11 +141,10 @@ export class Reflow {
         this.t.elapsedAverage = d.elapsedAverage;
         this.t.isOverdueCycle = d.isOverdueCycle;
         this.t.isOverdueAverage = d.isOverdueAverage;
-        console.table(this.t);
-        $(this.e).find('.now .cycle').text(this.t.cycle);
-        $(this.e).find('.now .elapsedCycle').text(this.msToDur(this.t.elapsedCycle));
-        $(this.e).find('.now .elapsedTotal').text(this.msToDur(this.t.elapsedTotal));
-        $(this.e).find('.now .elapsedAverage').text(this.msToDur(this.t.elapsedAverage));
+        $(this.e).find('.now .cycle').text(`#${this.t.cycle}`);
+        $(this.e).find('.now .elapsedCycle').html(this.msToDur(this.t.elapsedCycle));
+        $(this.e).find('.now .elapsedTotal').html(this.msToDur(this.t.elapsedTotal));
+        $(this.e).find('.now .elapsedAverage').html(this.msToDur(this.t.elapsedAverage));
         if (this.t.isOverdueCycle) {
             $(this.e).find('.now .elapsedCycle').addClass('overdue');
         }
@@ -166,7 +163,7 @@ export class Reflow {
             this.a.play();
         }
     }
-    avoidDoubleClick(elementSelector, everywhere = false, timeout = 750) {
+    avoidDoubleClick(elementSelector, everywhere = false, timeout = 1000) {
         let e = null;
         if (!everywhere) {
             e = $(this.e).find(elementSelector);
@@ -190,21 +187,21 @@ export class Reflow {
         }
         return id;
     }
-    msToDur(milliseconds, fixedPoint = false) {
+    msToDur(milliseconds) {
         const seconds = milliseconds / 1000;
         const d = Math.floor(seconds / (3600 * 24));
         const h = Math.floor(seconds % (3600 * 24) / 3600);
         const m = Math.floor(seconds % 3600 / 60);
-        const s = (!fixedPoint) ? Math.floor(seconds % 60) : seconds % 60;
+        const s = Math.floor(seconds % 60);
         let elapsed = '';
         if (seconds >= 86400)
-            elapsed += `${d}d `;
+            elapsed += `${d}<span class="tunit">d</span> `;
         if (seconds >= 3600)
-            elapsed += `${h}h `;
+            elapsed += `${h}<span class="tunit">h</span> `;
         if (seconds >= 60)
-            elapsed += `${m}m `;
-        elapsed += (!fixedPoint) ? `${s.toFixed(0)}s` : `${s.toFixed(2)}s`;
-        return elapsed;
+            elapsed += `${m}<span class="tunit">m</span> `;
+        elapsed += `${s}<span class="tunit">s</span>`;
+        return (elapsed) ? elapsed : '0<span class="tunit">s</span>';
     }
     durToMs(duration) {
         const dur = duration.split(' ');
