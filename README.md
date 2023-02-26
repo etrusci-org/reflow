@@ -1,6 +1,5 @@
 # Reflow
 
-Work in progress.  
 A helper tool to change your habits.  
 Created upon request.
 
@@ -8,36 +7,27 @@ Created upon request.
 
 ## Usage
 
-1. Decide on a habit change
-2. Create timer
-3. Do stuff the in the cycle time you've set yourself
-4. Never give up
+1. Decide on a habit change.
+2. Create timer.
+3. Do stuff the in the cycle time you've set yourself.
+4. Never give up.
 
-Of course you can also just use it as a stopwatch.
-
-### Example: Create a new timer
+### Example
 
 Let's say you want to start to drink water more often.
 
-1. Type `i drank water` into the **Identifier Label** field.
-2. Type `30m` into the **Cycle Target Time** field.
-3. Leave the **Audio Alert Volume** slider at `1.0`.
-4. Click the **create** button.
+1. Click **+++** to add a timer.
+2. Change the label to `i drank water`.
+3. Enter `30m` as cycle target time.  
+   If you enter a valid target time, the audio alert volume option will become visible.
+4. Drink a sip of water.
+5. Click **start**.
+6. Whenever you drink water, click the **new cycle** button.
 
-    *A timer should have been now created. You can hover over the individual elements to get more information about them.*
+**Cycle target time input format**:
+The format is: `Xd Xh Xm Xs`.  
+`X` must be a positive integer followed by `d`, `h`, `m` or `s`.  
+Separate multiple values with a space.  
+You can ommit 0-values. E.g. `4h 30s` works too. Also just `300s`.
 
-5. Drink a sip of water. Then, click the **!** button to start the timer.
-6. Whenever you drink water, click the **+** button to start a new cycle.
-
-### Example: Import a timer set
-
-You can create multiple timers at once. Just write down your favorite timers in a text file to copy & paste them later.
-
-Here's an example set you can try:
-
-```text
-I drank water:30m
-Hello cruel world
-Audio Alert Test:10s:1.0
-Quieter Audio Alert:10s:0.3
-```
+---

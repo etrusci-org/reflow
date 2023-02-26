@@ -14,7 +14,7 @@
         "rootDir": "./src/ts",
         "moduleResolution": "node",
         // Emit
-        "outDir": "./app",
+        "outDir": "./app/lib",
         "removeComments": true,
         "noEmitOnError": true,
         // Interop Constraints

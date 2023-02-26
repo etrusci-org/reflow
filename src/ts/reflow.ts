@@ -1,86 +1,69 @@
-import { reflowAudioAlertBin } from './reflow-audio.js'
+import { eHTML } from './reflow-ui.js'
+import { a1Bin } from './reflow-audio.js'
+
+
 
 
 export class Reflow {
-    id: string = this.getNewId()
-    label: string = ''
-    startedOn: number = 0
-    cycleStartedOn: number = 0
-    cycle: number = 0
-    cycleElapsed: number = 0
-    totalElapsed: number = 0
-    averageElapsed: number = 0
+    e: JQuery<HTMLDivElement>
+    w: Worker
+    t: {
+        label: string
+        firstStartedOn: number
+        cycleStartedOn: number
+        cycle: number
+        elapsedCycle: number
+        elapsedTotal: number
+        elapsedAverage: number
+        targetTime: number
+        volume: number
+        isOverdueCycle: boolean
+        isOverdueAverage: boolean
+    }
+    a: HTMLAudioElement
 
-    alertAfter: number = 0
-    alertAudioVolume: number = 1.0
-    alertAudio: HTMLAudioElement = new Audio(reflowAudioAlertBin)
-    alertAudioMuted: boolean = false
 
-    worker: Worker
+    constructor() {
+        this.e = $(eHTML)
 
-    elementContainerSelector: string = 'div.timers'
-    element: JQuery<HTMLDivElement> = $(`
-        <div class="timer">
-            <div class="label" title="Identifier of this timer">-</div>
-            <div class="cycle" title="Current cycle">-</div>
-            <div class="cycleElapsed" title="Elapsed time in current cycle">-</div>
-            <div class="alertAfter hidden" title="Maximum target time for each cycle"></div>
-            <div class="totalElapsed" title="Total time elapsed since start">-</div>
-            <div class="averageElapsed" title="Average time elapsed per cycle">-</div>
-            <div class="ctrl">
-                <button class="mute hidden" title="Mute audio alert until next cycle">/</button>
-                <button class="start" title="Start timer">!</button>
-                <button class="reset hidden" title="Start new cycle">+</button>
-                <button class="stop hidden" title="Stop timer">·</button>
-                <button class="delete" title="Delete timer">×</button>
-            </div>
-        </div>
-    `)
-
-    // --------------------------------------------------------------------------------------------
-
-    constructor(label?: string, alertAfter?: string, alertAudioVolume?: string) {
-        if (label) {
-            this.label = label.trim()
-        }
-        else {
-            this.label = this.id
+        this.w = new Worker('./lib/reflow-worker.js')
+        this.w.onmessage = (event) => {
+            this.onWorkerMessage(event.data)
         }
 
-        if (alertAfter) {
-            this.alertAfter = this.durToMillisec(alertAfter)
+        this.a = new Audio(`data:audio/mpeg;base64,${a1Bin}`)
+
+        this.t = {
+            label: this.getRandomLabel(),
+            firstStartedOn: 0,
+            cycleStartedOn: 0,
+            cycle: 0,
+            elapsedCycle: 0,
+            elapsedTotal: 0,
+            elapsedAverage: 0,
+            targetTime: 0,
+            volume: 0.5,
+            isOverdueCycle: false,
+            isOverdueAverage: false,
         }
 
-        if (alertAudioVolume) {
-            let vol: number = parseFloat(alertAudioVolume)
-            if (vol >= 0.0 || vol <= 1.0) {
-                this.alertAudioVolume = vol
-            }
-        }
+        $(this.e).find('.ctrl .start').on('click', () => { this.start() })
+        $(this.e).find('.ctrl .reset').on('click', () => { this.reset() })
+        $(this.e).find('.ctrl .stop').on('click', () => { this.stop() })
+        $(this.e).find('.ctrl .delete').on('click', () => { this.delete() })
+        $(this.e).find('.ctrl .targetTime').on('input', () => { this.changeTargetTime() })
+        $(this.e).find('.ctrl .volume').on('input', () => { this.changeVolume() })
 
-        this.alertAudio.volume = this.alertAudioVolume
+        $(this.e).find('.ctrl .reset').hide()
+        $(this.e).find('.ctrl .stop').hide()
+        $(this.e).find('.ctrl .volume').hide()
 
-        this.worker = new Worker('./reflow-worker.js')
-
-        this.worker.onmessage = (event) => {
-            this.updateElement(
-                event.data.cycleElapsed,
-                event.data.totalElapsed,
-                event.data.averageElapsed,
-                event.data.overdueCycle,
-                event.data.overdueAverage,
-            )
-        }
-
-        this.bakeElement()
-
-        console.debug(this)
+        $(this.e).find('.label').val(this.t.label).attr('placeholder', this.t.label)
     }
 
-    // --------------------------------------------------------------------------------------------
 
-    add(): void {
-        $(this.element).appendTo(this.elementContainerSelector)
+    add(targetSelector: string = '.timers'): void {
+        $(this.e).appendTo(targetSelector)
     }
 
     // --------------------------------------------------------------------------------------------
@@ -88,23 +71,24 @@ export class Reflow {
     start(): void {
         this.avoidDoubleClick('.ctrl button')
 
-        $(this.element).find('.ctrl .start').remove()
-        $(this.element).find('.ctrl .reset').removeClass('hidden')
-        $(this.element).find('.ctrl .stop').removeClass('hidden')
+        $(this.e).find('.ctrl .start').remove()
+        $(this.e).find('.ctrl .reset').show()
+        $(this.e).find('.ctrl .stop').show()
+        $(this.e).find('.ctrl .targetTime').remove()
 
-        let now = Date.now()
-        this.startedOn = now
-        this.cycleStartedOn = now
-        this.cycle = 1
+        const tnow = Date.now()
 
-        $(this.element).find('.cycle').text(this.cycle)
+        this.t.firstStartedOn = tnow
+        this.t.cycleStartedOn = tnow
+        this.t.cycle = 1
 
-        this.worker.postMessage({
+        if (this.t.targetTime == 0) {
+            this.t.volume = 0
+        }
+
+        this.w.postMessage({
             action: 'start',
-            startedOn: this.startedOn,
-            cycleStartedOn: this.cycleStartedOn,
-            cycle: this.cycle,
-            alertAfter: this.alertAfter,
+            ...this.t,
         })
     }
 
@@ -112,23 +96,18 @@ export class Reflow {
     reset(): void {
         this.avoidDoubleClick('.ctrl button')
 
-        this.cycleStartedOn = Date.now()
-        this.cycle += 1
-        this.alertAudioMuted = false
+        const pastE = $(this.e).find('.now') .clone()
+        $(pastE).removeClass('now').addClass('past')
+        $(pastE).find('.targetTime').remove()
+        $(pastE).find('.elapsedAverage').attr('colspan', 2)
+        $(pastE).insertAfter($(this.e).find('.now'))
 
-        $(this.element).find('.cycle').text(this.cycle)
+        this.t.cycleStartedOn = Date.now()
+        this.t.cycle += 1
 
-        $(this.element).find('.cycleElapsed').removeClass('alert')
-        $(this.element).find('.averageElapsed').removeClass('alert')
-        $(this.element).find('.ctrl .mute').addClass('hidden')
-        $(this.element).find('.ctrl .mute').prop('disabled', false)
-
-        this.worker.postMessage({
+        this.w.postMessage({
             action: 'reset',
-            startedOn: this.startedOn,
-            cycleStartedOn: this.cycleStartedOn,
-            cycle: this.cycle,
-            alertAfter: this.alertAfter,
+            ...this.t,
         })
     }
 
@@ -136,98 +115,107 @@ export class Reflow {
     stop(): void {
         this.avoidDoubleClick('.ctrl button')
 
-        $(this.element).find('.ctrl .mute').remove()
-        $(this.element).find('.ctrl .reset').remove()
-        $(this.element).find('.ctrl .stop').remove()
+        $(this.e).find('.ctrl .reset').remove()
+        $(this.e).find('.ctrl .stop').remove()
+        $(this.e).find('.ctrl .volume').remove()
 
-        this.worker.postMessage({
+        this.w.postMessage({
             action: 'stop',
         })
 
-        this.worker.terminate()
+        this.w.terminate()
     }
 
 
     delete(): void {
         this.avoidDoubleClick('.ctrl button', true)
 
-        $(this.element).remove()
-
-        if ($('div.timer').length == 0) {
-            $(this.elementContainerSelector).addClass('hidden')
-        }
-
-        this.worker.postMessage({
+        this.w.postMessage({
             action: 'delete',
         })
 
-        this.worker.terminate()
+        this.w.terminate()
+
+        $(this.e).remove()
     }
 
 
-    mute(): void {
-        $(this.element).find('.ctrl .mute').prop('disabled', true)
+    changeTargetTime(): void {
+        const newTargetTime = $(this.e).find('.ctrl .targetTime').val()
 
-        this.alertAudioMuted = true
+        if (newTargetTime && typeof(newTargetTime) === 'string') {
+            this.t.targetTime = this.durToMs(newTargetTime)
+
+            if (this.t.targetTime > 0) {
+                $(this.e).find('.now .targetTime').html(this.msToDur(this.t.targetTime))
+                $(this.e).find('.ctrl .volume').show()
+            }
+            else {
+                $(this.e).find('.now .targetTime').text('-')
+                $(this.e).find('.ctrl .volume').hide()
+            }
+        }
+        else {
+            $(this.e).find('.now .targetTime').text('-')
+            $(this.e).find('.ctrl .volume').hide()
+        }
+    }
+
+
+    changeVolume(): void {
+        const newVol = $(this.e).find('.ctrl .volume').val()
+
+        if (newVol && typeof(newVol) === 'string') {
+            this.t.volume = parseFloat(newVol)
+            this.a.volume = this.t.volume
+        }
     }
 
     // --------------------------------------------------------------------------------------------
 
-    updateElement(cycleElapsed: number, totalElapsed: number, averageElapsed: number, overdueCycle: boolean, overdueAverage: boolean): void {
-        $(this.element).find('.cycleElapsed').html(this.MillisecToDur(cycleElapsed))
-        $(this.element).find('.totalElapsed').html(this.MillisecToDur(totalElapsed))
-        if (this.cycle > 1) {
-            $(this.element).find('.averageElapsed').html(this.MillisecToDur(averageElapsed))
+    onWorkerMessage(d: any): void {
+        this.t.cycle = d.cycle
+        this.t.elapsedCycle = d.elapsedCycle
+        this.t.elapsedTotal = d.elapsedTotal
+        this.t.elapsedAverage = d.elapsedAverage
+        this.t.isOverdueCycle = d.isOverdueCycle
+        this.t.isOverdueAverage = d.isOverdueAverage
+
+        $(this.e).find('.now .cycle').text(`#${this.t.cycle}`)
+        $(this.e).find('.now .elapsedCycle').html(this.msToDur(this.t.elapsedCycle))
+        $(this.e).find('.now .elapsedTotal').html(this.msToDur(this.t.elapsedTotal))
+        $(this.e).find('.now .elapsedAverage').html(this.msToDur(this.t.elapsedAverage))
+
+        if (this.t.isOverdueCycle) {
+            $(this.e).find('.now .elapsedCycle').addClass('overdue')
         }
-        if (overdueCycle) $(this.element).find('.cycleElapsed').addClass('alert')
-        if (overdueAverage) $(this.element).find('.averageElapsed').addClass('alert')
+        else {
+            $(this.e).find('.now .elapsedCycle').removeClass('overdue')
+        }
+
+        if (this.t.isOverdueAverage) {
+            $(this.e).find('.now .elapsedAverage').addClass('overdue')
+        }
+        else {
+            $(this.e).find('.now .elapsedAverage').removeClass('overdue')
+        }
+
         if (
-            overdueCycle &&
-            !this.alertAudioMuted &&
-            this.alertAudio.paused
+            this.t.isOverdueCycle &&
+            this.t.volume > 0 &&
+            this.a.paused
         ) {
-            $(this.element).find('.ctrl .mute').removeClass('hidden')
-            this.alertAudio.play()
+            this.a.play()
         }
     }
 
+    // --------------------------------------------------------------------------------------------
 
-    getNewId(length: number = 6): string {
-        let chars: string[] = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('')
-        let id: string = ''
-
-        length = Math.min(length, chars.length)
-
-        while (id.length < length) {
-            id += chars.splice(Math.floor(Math.random() * chars.length), 1)
-        }
-
-        return id
-    }
-
-
-    bakeElement(): void {
-        $(this.element).find('.ctrl .start').on('click', () => { this.start() })
-        $(this.element).find('.ctrl .reset').on('click', () => { this.reset() })
-        $(this.element).find('.ctrl .stop').on('click', () => { this.stop() })
-        $(this.element).find('.ctrl .delete').on('click', () => { this.delete() })
-        $(this.element).find('.ctrl .mute').on('click', () => { this.mute() })
-
-        $(this.element).find('.label').text(this.label)
-
-        if (this.alertAfter > 0) {
-            $(this.element).find('.alertAfter')
-                .text(`(${this.MillisecToDur(this.alertAfter)})`)
-                .removeClass('hidden')
-        }
-    }
-
-
-    avoidDoubleClick(elementSelector: string, everywhere: boolean = false, timeout: number = 750): void {
+    avoidDoubleClick(elementSelector: string, everywhere: boolean = false, timeout: number = 1000): void {
         let e: null | JQuery<HTMLElement> = null
 
         if (!everywhere) {
-            e = $(this.element).find(elementSelector)
+            e = $(this.e).find(elementSelector)
         }
         else {
             e = $(elementSelector)
@@ -242,24 +230,38 @@ export class Reflow {
     }
 
 
-    MillisecToDur(milliseconds: number, fixedPoint: boolean = false): string {
+    getRandomLabel(length: number = 6): string {
+        let chars: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('')
+        let id: string = ''
+
+        length = Math.min(length, chars.length)
+
+        while (id.length < length) {
+            id += chars.splice(Math.floor(Math.random() * chars.length), 1)
+        }
+
+        return id
+    }
+
+
+    msToDur(milliseconds: number): string {
         const seconds = milliseconds / 1000
         const d: number = Math.floor(seconds / (3600 * 24))
         const h: number = Math.floor(seconds % (3600 * 24) / 3600)
         const m: number = Math.floor(seconds % 3600 / 60)
-        const s: number = (!fixedPoint) ? Math.floor(seconds % 60) : seconds % 60
+        const s: number = Math.floor(seconds % 60)
 
         let elapsed: string = ''
-        if (seconds >= 86400) elapsed += `${d}d `
-        if (seconds >= 3600) elapsed += `${h}h `
-        if (seconds >= 60) elapsed += `${m}m `
-        elapsed +=  (!fixedPoint) ? `${s.toFixed(0)}s` : `${s.toFixed(2)}s`
+        if (seconds >= 86400) elapsed += `${d}<span class="tunit">d</span> `
+        if (seconds >= 3600) elapsed += `${h}<span class="tunit">h</span> `
+        if (seconds >= 60) elapsed += `${m}<span class="tunit">m</span> `
+        elapsed +=  `${s}<span class="tunit">s</span>`
 
-        return elapsed
+        return (elapsed) ? elapsed : '0<span class="tunit">s</span>'
     }
 
 
-    durToMillisec(duration: string): number {
+    durToMs(duration: string): number {
         const dur: string[] = duration.split(' ')
         let s: number = 0
 

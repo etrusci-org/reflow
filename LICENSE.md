@@ -10,6 +10,6 @@ Public Domain Worldwide
 <https://jquery.org/license>
 
 Files:
-- app/vendor/jquery-3.min.js
+- app/lib/vendor/jquery-3.min.js
 
 ---

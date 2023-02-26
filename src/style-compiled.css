@@ -1,0 +1,184 @@
+html,
+body,
+div,
+table,
+thead,
+tbody,
+tr,
+th,
+td,
+a,
+button,
+input,
+select {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  padding: 1rem;
+}
+
+button,
+select {
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  max-width: 15rem;
+  padding: 0.25rem 0;
+}
+
+body,
+input,
+button,
+select {
+  font-family: sans-serif;
+  font-size: 1rem;
+}
+
+a {
+  text-decoration-style: wavy;
+}
+a:link, a:visited {
+  text-decoration-line: none;
+}
+a:hover, a:focus {
+  text-decoration-line: underline;
+}
+a:active {
+  text-decoration-line: underline;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: left;
+}
+table th {
+  font-weight: bold;
+}
+table th,
+table td {
+  padding: 0.25rem 1.5rem 0.25rem 0.25rem;
+  border: 1px solid;
+}
+table td {
+  font-family: monospace;
+}
+table .now td {
+  font-size: 1.5rem;
+}
+table .now td .tunit {
+  font-size: 1.3rem;
+}
+table .past td {
+  font-size: 0.85rem;
+}
+
+.timer {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 2rem 2rem 0;
+}
+.timer .label {
+  font-family: serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 0;
+}
+.timer .ctrl button,
+.timer .ctrl select {
+  font-size: 0.75rem;
+}
+.timer .ctrl .start,
+.timer .ctrl .reset {
+  font-size: 1.2rem;
+}
+.timer .ctrl div {
+  margin: 0 0 0.25rem 0;
+}
+
+.footer {
+  margin: 3rem 0 1rem 0;
+}
+
+.tunit {
+  font-family: serif;
+}
+
+body {
+  color: hsl(0deg, 0%, 76%);
+  background-color: hsl(0deg, 0%, 10%);
+}
+
+input {
+  color: hsl(0deg, 0%, 76%);
+  background-color: hsl(0deg, 0%, 10%);
+}
+input:hover, input:focus {
+  color: hsl(140deg, 23%, 67%);
+}
+
+button,
+select {
+  color: hsl(0deg, 0%, 76%);
+  background-color: hsl(0deg, 0%, 23%);
+}
+button:hover, button:focus,
+select:hover,
+select:focus {
+  color: hsl(140deg, 23%, 67%);
+  background-color: hsl(0deg, 0%, 27%);
+}
+button:active,
+select:active {
+  color: hsl(140deg, 71%, 52%);
+  background-color: hsl(0deg, 0%, 29%);
+}
+button[disabled],
+select[disabled] {
+  color: hsl(0deg, 0%, 27%);
+  background-color: hsl(0deg, 0%, 19%);
+}
+
+a:link, a:visited {
+  color: hsl(140deg, 23%, 67%);
+}
+a:hover, a:focus {
+  color: hsl(140deg, 71%, 52%);
+}
+a:active {
+  color: hsl(140deg, 71%, 52%);
+}
+
+table th {
+  color: hsl(0deg, 0%, 23%);
+}
+table th,
+table td {
+  border-color: hsl(0deg, 0%, 23%);
+}
+table .now td.elapsedCycle.overdue,
+table .past td.elapsedCycle.overdue {
+  color: hsl(0deg, 100%, 44%);
+}
+table .now td.elapsedAverage.overdue,
+table .past td.elapsedAverage.overdue {
+  color: hsl(34deg, 100%, 50%);
+}
+table .past td {
+  color: hsl(0deg, 0%, 33%);
+  border-color: hsl(0deg, 0%, 17%);
+}
+table tr.past:hover td {
+  color: hsl(0deg, 0%, 76%);
+  background-color: hsl(0deg, 0%, 13%);
+}

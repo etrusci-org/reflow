@@ -1,68 +1,23 @@
 {
-    "version": "2.0.0",
-    "presentation": {
-        "echo": false,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": true
-    },
-    "tasks": [
+	"version": "2.0.0",
+	"tasks": [
         {
-            "label": "reflow build",
-            "dependsOn": [
-                "tsc-watch",
-                "sass-watch",
-                "csso-watch",
-                "color-bake",
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "runOptions": {
-                "runOn": "folderOpen"
-            }
+            "label": "tsc watch",
+            "type": "shell",
+            "command": "tsc --watch -p ./tsconfig.json",
+            "group": "build"
         },
         {
-            "label": "tsc-watch",
+            "label": "sass watch",
             "type": "shell",
-            "command": "bash tsc-watch.sh",
-            "isBackground": true,
-            "problemMatcher": [],
-            "presentation": {
-                "group": "reflow"
-            }
+            "command": "sass --watch --update --style expanded --charset --no-source-map ./src/scss/*style.scss ./src/style-compiled.css",
+            "group": "build"
         },
         {
-            "label": "sass-watch",
+            "label": "csso watch",
             "type": "shell",
-            "command": "bash sass-watch.sh",
-            "isBackground": true,
-            "problemMatcher": [],
-            "presentation": {
-                "group": "reflow"
-            }
-        },
-        {
-            "label": "csso-watch",
-            "type": "shell",
-            "command": "bash csso-watch.sh",
-            "isBackground": true,
-            "problemMatcher": [],
-            "presentation": {
-                "group": "reflow"
-            }
-        },
-        {
-            "label": "color-bake",
-            "type": "shell",
-            "command": "bash color-bake.sh",
-            "isBackground": false,
-            "problemMatcher": [],
-            "presentation": {
-                "group": "reflow"
-            }
+            "command": "csso --watch --comments none --stat --input-source-map none --source-map none --input ./src/style-compiled.css --output ./app/lib/style.min.css",
+            "group": "build"
         },
     ]
 }
