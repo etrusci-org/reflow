@@ -94,6 +94,14 @@ table .past td {
   font-size: 1.5rem;
   padding: 0;
 }
+.timer .ctrl button,
+.timer .ctrl select {
+  font-size: 0.75rem;
+}
+.timer .ctrl .start,
+.timer .ctrl .reset {
+  font-size: 1.2rem;
+}
 .timer .ctrl div {
   margin: 0 0 0.25rem 0;
 }

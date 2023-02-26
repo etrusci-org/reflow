@@ -126,6 +126,16 @@ table {
     }
 
     .ctrl {
+        button,
+        select {
+            font-size: .75rem;
+        }
+
+        .start,
+        .reset {
+            font-size: 1.2rem;
+        }
+
         div {
             margin: 0 0 .25rem 0;
         }
